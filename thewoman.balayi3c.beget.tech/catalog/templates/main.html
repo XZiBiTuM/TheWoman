@@ -1,0 +1,149 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!--
+    <div class="catalog">
+        <i><h1 class="catalog-label">Каталог</h1></i><br><br>
+        <div class="catalog-row">
+            <div class="catalog-col">
+                <div>
+                    <div class="mb-4 shadow-sm animate__animated animate__fadeIn my-card" style="background: #fff;">
+                        <a href="{% url 'product_list' %}">
+                            <img src="/static/ero.jpg" style="width: 50%; height: 50%;" alt="ero">
+                        </a>
+                    </div>
+                    <div class="mb-4 shadow-sm animate__animated animate__fadeIn my-card" style="background: #fff;">
+                        <a href="{% url 'product_list' %}">
+                            <img src="/static/panties.jpg" style="width: 50%; height: 50%;" alt="ero">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="catalog-col">
+                <div>
+                    <div class="mb-4 shadow-sm animate__animated animate__fadeIn my-card" style="background: #fff;">
+                        <a href="{% url 'product_list' %}">
+                            <img src="/static/ero.jpg" style="width: 50%; height: 50%;" alt="ero">
+                        </a>
+                    </div>
+                    <div class="mb-4 shadow-sm animate__animated animate__fadeIn my-card">
+                        <a href="{% url 'product_list' %}">
+                            <img src="/static/panties.jpg" style="width: 50%; height: 50%;" alt="ero">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    
+    <div class="big-background">
+    
+    {% if advertisement.is_active %}
+    <div class="advertisement-xzibitum animate__animated animate__fadeIn">
+        {% if advertisement.url_add == 'http://example.com' %}
+            <a href="#" title="Реклама"><img src="{{ advertisement.add.url }}" alt="{{ advertisement.name }}" class="advertisement-img"></a>
+        {% else %}
+            <a href="{{ advertisement.url_add }}" title="Реклама" target="_blank"><img src="{{ advertisement.add.url }}" alt="{{ advertisement.name }}" class="advertisement-img"></a>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="advertisement-xzibitum animate__animated animate__fadeIn" style="display: none;">
+        {% if advertisement.url_add == 'http://example.com' %}
+            <a href="#" title="Реклама"><img src="{{ advertisement.add.url }}" alt="{{ advertisement.name }}" class="advertisement-img"></a>
+        {% else %}
+            <a href="{{ advertisement.url_add }}" title="Реклама" target="_blank"><img src="{{ advertisement.add.url }}" alt="{{ advertisement.name }}" class="advertisement-img"></a>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class="big-bg animate__animated animate__fadeIn">
+       <div class="about_us">
+            <div class="about_us_label"><h1 class="about_us_label_text">О НАС</h1></div>
+            <h2 class="about_us_text"><i><b>The Woman</b></i> — это оптовая компания собравшая на своих электронных полках модное женское белье по доступным ценам. Мы работаем с 2009 года и за эти годы работы мы выбрали лучших производителей в своей ценовой категории, а наша продукция сможет удовлетворить любую модницу.</h2>
+        </div>
+        <div class="min-price-banner">
+            <div class="min-price-text"><h2 class="text-price-w">Минимальная стоимость заказа &mdash; 10 000 руб.</h2></div>
+        </div>
+    
+        <!--<div class="button-info">
+            <a href="#" id="popup-button"><h2 style="color: #fff; font-size: 30px;" title="Доп. информация о товаре">POPUP</h2></a><br><br>
+            <div id="popup-container" class="popup-container">
+                <div class="popup-content">
+                    <h2 style="text-align: center;">Дополнительная информация</h2><hr><br>
+                    <p style="text-align: center;">Минимальная сумма оптового заказа составляет 10 000 руб.</p>
+                    <p style="text-align: left;">Количество товара на складе:</p>
+                    <ul>
+                        {% for inventory in inventories %}
+                            <li style="font-size: 17px;">{{ inventory.color }} цвет: {{ inventory.quantity }}шт.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>-->
+    <div class="phone-br"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
+    </div>
+    </div>    
+<script>
+// Функция для установки Cookie
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+// Функция для получения Cookie по имени
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+// Функция для скрытия плашки
+function hideBanner() {
+  document.getElementById("privacy-policy-banner").style.display = "none";
+}
+
+// Функция для отображения плашки, если пользователь еще не согласился
+function showBanner() {
+  var agreed = getCookie("privacy_policy_agreed");
+  if (!agreed) {
+    document.getElementById("privacy-policy-banner").style.display = "block";
+  }
+}
+
+// Обработчик события для кнопки "Согласен"
+document.getElementById("agree-button").addEventListener("click", function() {
+  setCookie("privacy_policy_agreed", "true", 365); // Установка Cookie на 365 дней
+  hideBanner();
+});
+
+// Показ плашки при первом входе на сайт
+showBanner();
+</script>
+
+<script>
+    var popupButton = document.getElementById("popup-button");
+    var popupContainer = document.getElementById("popup-container");
+
+    popupButton.addEventListener("click", function() {
+      popupContainer.style.display = "block";
+    });
+
+    popupContainer.addEventListener("click", function(event) {
+      if (event.target === popupContainer) {
+        popupContainer.style.display = "none";
+      }
+    });
+</script>
+{% endblock %}

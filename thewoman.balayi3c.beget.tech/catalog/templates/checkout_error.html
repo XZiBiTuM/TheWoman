@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="checkout-card">
+<br>
+<i><h1>Ошибка</h1></i>
+    <div class="checkout-card-f">
+<p>Вы пытаетесь купить больше товара, чем у нас есть на складе.</p>
+<div class="timer-close">
+            <span style="font-size: 17px;">Вы будете перенаправлены на главную страницу через&nbsp;</span><b></v><div id="timer"></div></b>&nbsp;&nbsp;
+            <div class="button-ok-success">
+                <a class="btn btn-outline-light" href="{% url 'main' %}" style="font-size: 24px;">OK</a>
+            </div>
+        </div>
+    </div>
+</div><br><br><br><br><br><br><br><br>
+<script>
+  setTimeout(function() {
+    window.location.href = "{% url 'main' %}";
+  }, 10000); // 10000 миллисекунд = 10 секунд
+</script>
+<script>
+    // Установите начальное значение таймера
+var count = 10;
+
+// Функция для обновления таймера
+function updateTimer() {
+  // Отображение текущего значения таймера
+  document.getElementById("timer").innerHTML = count;
+
+  // Уменьшение значения таймера
+  count--;
+
+  // Если значение таймера стало меньше 0, остановить таймер
+  if (count < 0) {
+    clearInterval(timer);
+  }
+}
+
+// Вызов функции updateTimer каждую секунду
+var timer = setInterval(updateTimer, 1000);
+
+// Вызов функции updateTimer сразу после загрузки страницы
+updateTimer();
+
+</script>
+{% endblock %}

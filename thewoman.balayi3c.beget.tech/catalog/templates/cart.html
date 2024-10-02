@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* CSS-стили для всплывающего окна */
+  .popup-cart {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .popup-cart-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+    .zxc-but {
+        font-size: 24px;
+    }
+
+
+</style>
+<div class="main-cart animate__animated animate__fadeIn">
+  <br>
+    <div class="clear-cart-and-name-flex">
+  <i><h1 class="name-category">Корзина</h1></i>
+             
+ </div>
+ {% if cart_items %}
+  <div class="flex-cart-half">
+  <div class="first-cart-part">
+    <div class="sec-cart-info">
+        <i><h3 class="text-phone-center">Информация о заказе</h3></i>
+        <hr>
+        {% for cart_item in cart_items %}
+           <div class="table-row margin-card shadow-sm">
+            <div class="tabel-row-item"><a href="{% url 'product_detail' cart_item.product.slug cart_item.product.article cart_item.product.size %}"><img src="{{ cart_item.product.mainimage.url }}" alt="{{ cart_item.product.name }}" width="100" style="border-radius: 10px;"></a></div>
+            <div class="tabel-row-item"><a href="{% url 'product_detail' cart_item.product.slug cart_item.product.article cart_item.product.size %}">{{ cart_item.product_name_with_color|linebreaksbr }}</a></div>
+            <span class="cart-item-size" style="display: none" id="cart-item-size-{{ cart_item.product.id }}">{{ cart_item.size }}</span>
+            <span class="cart-item-price" style="display: none" id="cart-item-price-{{ cart_item.product.id }}">{{ cart_item.product.num_of_products_in_packet }}</span>
+            <div class="tabel-row-item">
+              <form action="{% url 'update_cart' cart_item.product.id cart_item.size %}" method="POST">
+                {% csrf_token %}
+                <div class="quantity-input">
+                  <input type="hidden" class="color" name="color" value="{{ cart_item.color }}">
+                  <input style="border: none;" type="number" class="quantity" name="quantity_{{ cart_item.product.id }}_{{ cart_item.color }}_{{ cart_item.size }}" min="1" value="{{ cart_item.quantity }}" data-product-id="{{ cart_item.product.id }}">
+                  <button type="submit" class="decrement-quantity btn btn-outline-light" data-product-id="{{ cart_item.product.id }}" data-color="{{ cart_item.color }}"><i class="fa-solid fa-minus" style="color: red;"></i></button>
+                  <button type="submit" class="increment-quantity btn btn-outline-light" data-product-id="{{ cart_item.product.id }}" data-color="{{ cart_item.color }}"><i class="fa-solid fa-plus" style="color: green;"></i></button>
+                </div>
+              </form>
+            </div>
+               <span class="price" id="cart-item-price-for-{{ cart_item.product.id }}" style="display: none;">{{ cart_item.product.price }}</span>
+               <span style="display: none;" id="product-data" data-product-id="{{ cart_item.product.id }}" data-product-name="{{ cart_item.product.name }}">{{ cart_item.product.id }}</span>
+               <div class="item-total tabel-row-item">{{ cart_item.product.price }} ₽ (<span id="out-sum-{{ cart_item.product.id }}"></span><span>&nbsp;₽/шт.</span>)</div>
+            <div class="tabel-row-item delete-but"><a href="{% url 'remove_from_cart' cart_item.product.id cart_item.color cart_item.size %}" id="remove-item-a-{{ cart_item.product.id }}" class="remove-item" data-product-id="{{ cart_item.product.id }}" data-color="{{ cart_item.color }}" data-size="{{ cart_item.size }}" style="font-size: 20px;"><i class="fa-regular fa-circle-xmark" style="color: #ff0000;"></i></a></div>&nbsp;
+          </div>
+        <br><div class="phone-br"><hr></div>
+        {% endfor %}
+    <div>
+    </div>
+    </div>
+  </div>
+      <div class="phone-br"><br></div>
+    <div class="second-cart-part">
+        <div class="sec-cart-info">
+        <i><h3 class="text-phone-center">Условия заказа</h3></i>
+        <hr>
+       <div>
+          <p>Всего товара в корзине: <span id="total-quantity">{{ total_quantity }}</span></p>
+          <span>Итого к оплате:</span>
+          <span id="total-price">{{ total_price }} ₽</span>
+        </div><br>
+        <div>
+          <div class="order-but">
+              <form id="checkout-form" action="{% url 'checkout' %}">
+                  {% csrf_token %}
+                  <p style="text-align: center;"><button type="submit" class="btn btn-outline-light zxc-but">Оформить заказ</button></p>
+              </form>
+
+                <div class="popup-cart" id="popup-cart">
+                  <div class="popup-cart-content">
+                    <span class="close" id="close">&times;</span>
+                    <h2 style="text-align: center;">Упс...</h2>
+                      <br>
+                    <p style="text-align: center;">Сумма заказа должна быть не менее 10000 рублей.</p>
+                  </div>
+                </div>
+
+          </div>
+        </div>
+        </div>
+  </div>
+  </div>
+       <form id="update-cart-form" method="post" action="{% url 'update_cart' 0 0 %}">
+        {% csrf_token %}
+        <input type="hidden" name="update_cart" value="1">
+      </form>
+  <div>
+          <div>
+            <a class="back-to-catalog" href="{% url 'product_list' %}">Вернуться к покупкам</a>
+          </div>
+    </div>
+  {% else %}
+  <div class="flex-cart-half-non-flex">
+  <div class="first-cart-part-ex">
+    <i><h3 style="text-align: center; margin-top: 30px; margin-bottom: 30px;">Корзина пуста</h3></i>
+  </div>
+   <div>
+          <div>
+            <a class="back-to-catalog" href="{% url 'product_list' %}">Вернуться к покупкам</a>
+          </div>
+    </div>
+  </div>
+  {% endif %}
+</div><br><br><br><br><br><br><br><br><div class="phone-br"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
+    <script>
+        $(document).ready(function() {
+      // Обработка удаления товара из корзины
+      $('.remove-item').click(function(e) {
+        e.preventDefault();
+        var productId = $(this).attr('data-product-id');
+        var color = $(this).attr('data-color');
+        var size = $(this).attr('data-size');
+        console.log(size);
+        size = size === null ? '' : size;
+        console.log(productId, color, size)
+        removeCartItem(productId, color, size);
+      });
+
+      // Функция удаления товара из корзины через AJAX
+      function removeCartItem(productId, color, size) {
+        var csrf_token = "{{ csrf_token }}";
+        var urlEX = '{% url 'remove_from_cart' 323161 323161 323161 %}'.replace('323161', productId).replace('323161', color).replace('323161', size);
+        url = decodeURIComponent(urlEX);
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function(response) {
+            // Обработка успешного удаления
+            location.reload(); // Перезагрузка страницы после удаления
+            console.log(url);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            // Обработка ошибки
+            console.log(xhr.responseText);
+            console.log(url)
+          }
+        });
+      }
+      // Обработка увеличения количества
+      $('.increment-quantity').click(function() {
+        try {
+        var productId = $(this).attr('data-product-id');
+        var color = $(this).closest('form').find('.color').val();
+        var quantityInput = $(this).siblings('.quantity');
+        var quantity = parseInt(quantityInput.val());
+        var sizeID = "cart-item-size-" + productId;
+        // Получаем значение size из элемента
+        var size = document.getElementById(sizeID);
+        quantityInput.val(quantity + 1);
+        updateTotalQuantityAndPrice(productId, color, quantity + 1);
+        $('#update-cart-form').attr('action', '/update_cart/' + productId + '/' + size + '/');
+        $('#update-cart-form .color').val(color);
+        $('#update-cart-form .quantity').val(quantity);
+        $('#update-cart-form .size').val(size);
+        $('#update-cart-form').submit();
+        console.log(size);
+        undefinedFunction();
+      }
+      catch (error) {
+      // Блок для обработки ошибок
+      console.error('Произошла ошибка:', size);
+      }
+      });
+
+      // Обработка уменьшения количества
+      $('.decrement-quantity').click(function() {
+        try {
+        var productId = $(this).attr('data-product-id');
+        var color = $(this).closest('form').find('.color').val();
+        var quantityInput = $(this).siblings('.quantity');
+        var quantity = parseInt(quantityInput.val());
+        var sizeID = "cart-item-size-" + productId;
+        // Получаем значение size из элемента
+        var size = document.getElementById(sizeID);
+        var deleteProductButton = document.getElementById("remove-item-a");
+        if (quantity > 1) {
+          quantityInput.val(quantity - 1);
+          updateTotalQuantityAndPrice(productId, color, quantity - 1);
+        }
+        $('#update-cart-form').attr('action', '/update_cart/' + productId + '/' + size + '/');
+        $('#update-cart-form .color').val(color);
+        $('#update-cart-form .quantity').val(quantity);
+        $('#update-cart-form .size').val(size);
+        $('#update-cart-form').submit();
+        console.log(size);
+        undefinedFunction();
+      }
+      catch (error) {
+      // Блок для обработки ошибок
+      console.error('Произошла ошибка:', size);
+      }
+      });
+
+
+
+      // Функция обновления общего количества и общей цены
+      function updateTotalQuantityAndPrice(productId, color, quantity) {
+        var totalQuantity = 0;
+        var totalPrice = 0;
+
+        $('.quantity').each(function() {
+          var quantity = parseInt($(this).val());
+          totalQuantity += quantity;
+        });
+
+        $('.item-total').each(function() {
+          var price = parseFloat($(this).text().substring(1));
+          totalPrice += price * totalQuantity;
+        });
+
+        $('#total-quantity').text(totalQuantity);
+        $('#total-price').text(totalPrice.toFixed(0) + '₽');
+      }
+
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Получение значений из элементов HTML
+        const productItems = document.querySelectorAll('.table-row');
+
+        for (let i = 0; i < productItems.length; i++) {
+            const productItem = productItems[i];
+
+            const productDataElement = productItem.querySelector('#product-data');
+            const productId = productDataElement.dataset.productId;
+            const productName = productDataElement.dataset.productName;
+            const productPrice = parseFloat(productItem.querySelector('#cart-item-price-for-' + productId).innerText);
+            const numOfProducts = parseInt(productItem.querySelector('#cart-item-price-' + productId).innerText);
+
+            // Вычисление цены за единицу товара
+            const pricePerUnit = productPrice / numOfProducts;
+            console.log (pricePerUnit);
+
+            // Получение элемента для вывода результата
+            const outSumElement = productItem.querySelector('#out-sum-' + productId);
+
+            // Установка значения в элементе
+            outSumElement.innerText = pricePerUnit.toFixed(0); // Округление до двух знаков после запятой
+            console.log(i);
+        }
+    });
+</script>
+<script>
+  $(document).ready(function() {
+    // Функция для проверки общей суммы заказа
+    function checkTotalPrice() {
+      var totalPrice = parseFloat($('#total-price').text().replace('₽', '').replace(',', ''));
+      return totalPrice >= 10000;
+    }
+
+    // Обработка отправки формы
+    $('#checkout-form').submit(function(e) {
+      if (!checkTotalPrice()) {
+        e.preventDefault(); // Отменяем отправку формы
+        showPopup(); // Показываем всплывающее окно
+        disableScroll(); // Запрещаем скролл страницы
+      }
+    });
+
+    // Обработка закрытия всплывающего окна при клике на кнопку "Закрыть"
+    $('#close').click(function() {
+      hidePopup(); // Скрываем всплывающее окно
+      enableScroll(); // Разрешаем скролл страницы
+    });
+
+    // Функция для показа всплывающего окна
+    function showPopup() {
+      $('#popup-cart').fadeIn();
+    }
+
+    // Функция для скрытия всплывающего окна
+    function hidePopup() {
+      $('#popup-cart').fadeOut();
+    }
+
+    // Функция для блокировки скролла страницы
+    function disableScroll() {
+      $('body').addClass('no-scroll');
+    }
+
+    // Функция для разблокировки скролла страницы
+    function enableScroll() {
+      $('body').removeClass('no-scroll');
+    }
+  });
+</script>
+{% endblock %}

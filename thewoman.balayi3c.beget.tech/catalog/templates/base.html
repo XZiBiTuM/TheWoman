@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+{% load static %}
+    <title>{% block title %}TheWoman | {{title}}{% endblock %}</title>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/6541b5e2da.js" crossorigin="anonymous"></script>
+    <style>
+.color-item-flexbox {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 20px;
+}
+.popup-cart {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .popup-cart-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  .fa-chevron-down{
+      cursor: pointer;
+  }
+  .fa-chevron-up{
+      cursor: pointer;
+  }
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    }
+        a {
+  text-decoration: none;
+  color: black;
+  }
+  a:hover {
+  text-decoration: none;
+  color: #0d0d0d;
+  }
+  a:active {
+  text-decoration: none;
+  color: #030303;
+  }
+  .btn-outline-light {
+    background: none;
+    border-color: #FFE4E1;
+    color: black;
+    transition: color 0.3s ease-in-out;
+}
+.btn-outline-light:hover {
+    background: #FFE7E1;
+    border-color: #FFE4E1;
+}
+.btn-outline-light:focus {
+    background: #FFE9F1;
+    border-color: #FFE4E1;
+}
+.btn-outline-light1 {
+    background: none;
+    border-color: #FFE4E1;
+    color: #000;
+    transition: color 0.3s ease-in-out;
+}
+.btn-outline-light1:hover {
+    background: #FFE7E1;
+    color: #fff;
+}
+.btn-outline-light1:focus {
+    background: #FFE9F1;
+    border-color: #FFE4E1;
+    color: grey;
+}
+  .thumbnail:hover,
+  .thumbnail.selected {
+    border: 1px solid gray;
+  }
+  .selected {
+  border: 0px solid gray;
+}
+.two-tables {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.flex-descp {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.input-choice-ex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.two-parts-detail-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.table_and_text_one {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 88%;
+}
+.active-cart {
+  background: url(/static/cart-a.svg);
+  position: fixed;
+  bottom: 350px;
+  right: 5px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #C0C0C0;
+  color: #000;
+  text-align: center;
+  line-height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  font-size: 24px;
+  z-index: 99;
+  cursor: pointer;
+}
+.none-active-cart {
+  background: url(/static/cart.svg);
+  position: fixed;
+  z-index: 99;
+  background-size: contain;
+  background-repeat: no-repeat;
+  bottom: 350px;
+  right: 5px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #C0C0C0;
+  color: #000;
+  text-align: center;
+  line-height: 40px;
+  font-size: 24px;
+  cursor: pointer;
+}
+.active-phone-cart {
+  background: url(/static/cart-a.svg);
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: #C0C0C0;
+  color: #000;
+  opacity: .5;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 99999;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 0;
+}
+.none-active-phone-cart {
+  background: url(/static/cart.svg);
+  z-index: 99999;
+  opacity: .5;
+  width: 50px;
+  border: 2px solid black;
+  height: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-color: #C0C0C0;
+  color: #000;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 0;
+}
+.active-phone-cart.active {
+  background: url(/static/cart-a.svg);
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: #C0C0C0;
+  color: #000;
+  opacity: 1;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 99999;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 0;
+}
+.none-active-phone-cart.active {
+  background: url(/static/cart.svg);
+  z-index: 99999;
+  width: 50px;
+  border: 2px solid black;
+  height: 50px;
+  opacity: 1;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-color: #C0C0C0;
+  color: #000;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 0;
+}
+.unique-popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.unique-popup {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #141414;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 7px;
+}
+
+.unique-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.unique-popup-content {
+    margin: 20px;
+}
+.unique-popup-h1{
+    text-align: center;
+    font-size: clamp(18px, 100%, 40px);
+    color: #fff;
+}
+.unique-popup-p{
+    text-align: center;
+    font-size: clamp(14px, 100%, 20px);
+    color: #fff;
+}
+
+.add-popup {
+    position: absolute;
+    z-index: 9999;
+    display: none;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0;
+    background-color: #141414;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: 0 solid black;
+    border-radius: 7px;
+}
+.add-img {
+    border: 0 solid black;
+    border-radius: 7px;
+    width: 100%;
+    height: auto;
+    
+}
+.add-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+.overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9998;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+<nav class="navbar sticky-top navbar-expand-xl navbar-light animate__animated animate__fadeIn">
+    <div class="logo-woman"><a class="navbar-brand" href="{% url 'main' %}"><img src="/static/logowoman.png" style="background-size: contain; background-repeat: no-repeat;" title="TheWoman"></a></div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse navbar-cls" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item {% if request.path == '/panties/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'product_list_1' %}" style="text-align: center">Sales</a>
+                </li>
+                <li class="nav-item {% if request.path == '/erotica/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'product_list' %}" style="text-align: center">Erotica</a>
+                </li>
+                <li class="nav-item {% if request.path == '/home/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'product_list_2' %}" style="text-align: center">Home</a>
+                </li>
+                <li class="nav-item {% if request.path == '/accessories/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'product_list_3' %}" style="text-align: center">Accessories</a>
+                </li>
+                <li class="nav-item {% if request.path == '/kaurs_laurel_mandhari_eva_lelari/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'product_list_4' %}" style="text-align: center">Kaurs Laurel & Mandhari & Eva Lelari</a>
+                </li>
+                <li class="nav-item {% if request.path == '/beachwear/' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'product_list_5' %}" style="text-align: center">Beachwear</a>
+                </li>
+                <li class="nav-item phone-cart">
+                    {% if cart_items %}
+                        <a class="nav-link" href="{% url 'cart' %}" style="text-align: center">
+                            <div class="active-phone-cart {% if request.path == '/cart/' %}active{% endif %}"></div>
+                        </a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'cart' %}" style="text-align: center">
+                            <div class="none-active-phone-cart {% if request.path == '/cart/' %}active{% endif %}"></div>
+                        </a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+
+<div class="pc-cart">
+    {% if cart_items %}
+        <a class="nav-link" style="background-color: #837c7c;" href="{% url 'cart' %}">
+            <div class="active-cart"></div>
+        </a>
+    {% else %}
+        <a class="nav-link" style="background-color: #837c7c;" href="{% url 'cart' %}">
+            <div class="none-active-cart"></div>
+        </a>
+    {% endif %}
+</div>
+{% csrf_token %}
+
+<!--
+<div id="unique-popup-container" class="unique-popup-container">
+    <div class="unique-popup">
+        <div class="unique-popup-content">
+            <span class="unique-close-btn" onclick="closeUniquePopup()"><i class="fa-solid fa-xmark" style="color: #ffffff;"></i></span>
+            <h1 class="unique-popup-h1">Добро пожаловать!</h1><br>
+            <p class="unique-popup-p">
+                Мы рады видеть вас снова.
+                Это все тот же сайт "TheWoman", но теперь он стал более эффективным и интуитивно понятным благодаря нашему обновленному дизайну.
+                Мы усердно трудились, чтобы сделать ваше пребывание здесь еще более комфортным и удобным.
+                Надеемся, что вам понравятся изменения, и вы найдете всю интересующую вас информацию легко и быстро.
+                <br>Спасибо, что выбрали нас!<br><br><i class="fa-solid fa-heart fa-2xl" style="color: #ffffff;"></i>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="overlay" id="overlay" style="display: none;" onclick="closeAddPopup()"></div> 
+<div class="add-popup" id="add-popup" style="display: none;"> 
+    <span class="add-close-btn" onclick="closeAddPopup()"><i class="fa-solid fa-xmark" style="color: #000;"></i></span> 
+    <img src='/static/nadd.png' alt='add' class='add-img'> 
+</div>
+-->
+
+
+<div id="privacy-policy-banner" class="ok-policy" style="display: none;">
+  <div class="flex-ok-pr">
+    <span>Нажимая кнопку "Согласен", вы подтверждаете, что ознакомились с нашей <a class="policy-ok" href="{% url 'policy' %}">политикой конфиденциальности</a> и соглашаетесь с ней.</span><span>&emsp;</span>
+    <button id="agree-button" class="btn btn-success">Согласен</button>
+  </div>
+</div>
+
+
+<footer class="bg-dark text-white text-center py-4" id="footer">
+  <p style="color: #fff;">&copy; 2023 "The Woman" — нижнее белье от производителя. Все права защищены.</p>
+  <ul class="list-inline">
+    <li class="list-inline-item"><a class="footer-link" href="{% url 'about_us' %}" style="color: #fff;">О нас / Условия сотрудничества</a></li>
+    <li class="list-inline-item pc" style="color: #fff;">|</li>
+    <li class="list-inline-item"><a class="footer-link" href="{% url 'policy' %}" style="color: #fff;">Политика конфиденциальности</a></li>
+    <li class="list-inline-item pc" style="color: #fff;">|</li>
+    <li class="list-inline-item"><a class="footer-link" href="{% url 'contacts' %}" style="color: #fff;">Контакты / Доставка</a></li></ul>
+    <div class="flex-list">
+        <div class="list-flex-item" style="margin-right: 1.5%; text-align: center;">
+           <a class="footer-icon" href="#" id="footer-ic"><i id="mail-ru" class="fa-solid fa-envelope fa-lg" style="color: #ffffff;"></i></a>
+           <span>&nbsp;</span>
+           <span id="text-footer-ic" class="footer-icon-text animate__animated animate__fadeIn"><a href="mailto:sales@optombelie.ru" style="color: #fff;" class="footer-link">sales@optombelie.ru</a></span>
+        </div>
+        <div class="list-flex-item" style="margin-right: 1.5%; text-align: center;">
+          <a class="footer-icon" href="#" id="footer-ic1"><i id="tel-ru" class="fa-solid fa-phone fa-lg" style="color: #ffffff;"></i></a>
+          <span>&nbsp;</span>
+          <span id="text-footer-ic1"  class="footer-icon-text animate__animated animate__fadeIn"><a href="tel:89282297385" style="color: #fff;" class="footer-link">8 (928) 229-73-85</a> / <a href="tel:88005008540" style="color: #fff;"  class="footer-link">8 (800) 500-85-40</a></span>
+        </div>
+        <!--<div class="list-flex-item" style="margin-right: 1.5%; text-align: center;">
+          <a class="footer-icon" href="#" id="footer-ic2"><i class="fa-solid fa-truck-fast fa-lg" style="color: #ffffff;"></i></a>
+          <span>&nbsp;</span>
+          <span id="text-footer-ic2"  class="footer-icon-text animate__animated animate__fadeIn">Доставка осуществляется любой транспортной компанией по предварительной договоренности. Заказы отправляем по России и СНГ.</span>
+        </div>-->
+        <div class="list-flex-item" style="text-align: center;">
+          <a class="footer-icon" style="padding-top: 3px;" href="#" id="footer-ic2"><i id="map-ru" class="fa-solid fa-map fa-lg" style="color: #ffffff;"></i></a>
+          <span>&nbsp;</span>
+          <span id="text-footer-ic2"  class="footer-icon-text animate__animated animate__fadeIn"><a style="color: #fff;" class="footer-link" target="_blank" href="https://yandex.ru/maps/?um=constructor%3A7668f73d2919afe868c20023e413806d8b7f1adef64f7708c07ecab5d26f66cc&source=constructorLink">Россия, Ростовская обл.,
+ Ростов-на-Дону,
+ул. Лелюшенко, 11</a></span>
+        </div>
+    </div>
+</footer>
+
+<footer class="bg-dark text-white text-center py-4" id="phone-footer">
+  <p style="color: #fff;">&copy; 2023 "The Woman" — нижнее белье от производителя. Все права защищены.</p>
+  <ul class="list-inline">
+    <li class="list-inline-item"><a class="footer-link" href="{% url 'about_us' %}" style="color: #fff;">О нас / Условия сотрудничества</a></li>
+    <li class="list-inline-item"><a class="footer-link" href="{% url 'policy' %}" style="color: #fff;">Политика конфиденциальности</a></li>
+    <li class="list-inline-item"><a class="footer-link" href="{% url 'contacts' %}" style="color: #fff;">Контакты / Доставка</a></li></ul>
+    <div class="flex-list">
+        <div class="list-flex-item" style="margin-right: 1.5%; text-align: center;">
+           <a class="footer-icon" href="#" id="phone-footer-ic"><i id="phone-mail-ru" class="fa-solid fa-envelope fa-lg" style="color: #ffffff;"></i></a>
+           <span>&nbsp;</span>
+           <span id="phone-text-footer-ic" class="footer-icon-text animate__animated animate__fadeIn"><a href="mailto:sales@optombelie.ru" style="color: #fff;" class="footer-link">sales@optombelie.ru</a></span>
+        </div>
+        <div class="list-flex-item" style="margin-right: 1.5%; text-align: center;">
+          <a class="footer-icon" href="#" id="phone-footer-ic1"><i id="phone-tel-ru" class="fa-solid fa-phone fa-lg" style="color: #ffffff;"></i></a>
+          <span>&nbsp;</span>
+          <span id="phone-text-footer-ic1"  class="footer-icon-text animate__animated animate__fadeIn"><a href="tel:89282297385" style="color: #fff;" class="footer-link">8 (928) 229-73-85</a> / <a href="tel:88005008540" style="color: #fff;"  class="footer-link">8 (800) 500-85-40</a></span>
+        </div>
+        <!--<div class="list-flex-item" style="margin-right: 1.5%; text-align: center;">
+          <a class="footer-icon" href="#" id="footer-ic2"><i class="fa-solid fa-truck-fast fa-lg" style="color: #ffffff;"></i></a>
+          <span>&nbsp;</span>
+          <span id="text-footer-ic2"  class="footer-icon-text animate__animated animate__fadeIn">Доставка осуществляется любой транспортной компанией по предварительной договоренности. Заказы отправляем по России и СНГ.</span>
+        </div>-->
+        <div class="list-flex-item" style="text-align: center;">
+          <a class="footer-icon" style="padding-top: 3px;" href="#" id="phone-footer-ic2"><i id="phone-map-ru" class="fa-solid fa-map fa-lg" style="color: #ffffff;"></i></a>
+          <span>&nbsp;</span>
+          <span id="phone-text-footer-ic2"  class="footer-icon-text animate__animated animate__fadeIn"><a style="color: #fff;" class="footer-link" target="_blank" href="https://yandex.ru/maps/?um=constructor%3A7668f73d2919afe868c20023e413806d8b7f1adef64f7708c07ecab5d26f66cc&source=constructorLink">Россия, Ростовская обл.,
+ Ростов-на-Дону,
+ул. Лелюшенко, 11</a></span>
+        </div>
+    </div>
+</footer>
+<!--
+<script>
+    window.onload = function() {
+        const popupKey = 'popupDisplayed';
+        const timestampKey = 'popupTimestamp';
+        const twoHours = 2 * 60 * 60 * 1000;
+    
+        // Проверяем, надо ли удалить информацию из localStorage
+        const timestamp = localStorage.getItem(timestampKey);
+        if (timestamp && (Date.now() - timestamp) > twoHours) {
+            localStorage.removeItem(popupKey);
+            localStorage.removeItem(timestampKey);
+        }
+    
+        // Проверяем, был ли попап уже показан
+        if (!localStorage.getItem(popupKey)) {
+            // Показываем попап
+            document.getElementById('overlay').style.display = 'block'; 
+            document.getElementById('add-popup').style.display = 'block'; 
+    
+            // Сохраняем информацию, что попап уже был показан и текущее время
+            localStorage.setItem(popupKey, 'true');
+            localStorage.setItem(timestampKey, Date.now());
+        }
+    }
+    function closeAddPopup() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('add-popup').style.display = 'none';
+    }
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Проверяем, если устройство не является мобильным, то показываем плашку
+    if (!isMobileDevice()) {
+        // Проверяем, была ли плашка уже отображена
+        var isPopupShown = localStorage.getItem("isPopupShown");
+
+        // Если плашка не была отображена, показываем её
+        if (!isPopupShown) {
+            setTimeout(function() {
+                document.getElementById("unique-popup-container").style.display = "block";
+                
+                // Устанавливаем флаг в локальное хранилище, указывая, что плашка была отображена
+                localStorage.setItem("isPopupShown", true);
+            }, 50); // Показать плашку через 0.005 секунды (можете изменить время)
+        }
+    }
+});
+
+function isMobileDevice() {
+    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+}
+
+function closeUniquePopup() {
+    document.getElementById("unique-popup-container").style.display = "none";
+}
+
+
+function closeUniquePopup() {
+    document.getElementById("unique-popup-container").style.display = "none";
+}
+</script>
+-->
+<script>
+    document.getElementById('footer-ic').addEventListener('mouseenter', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('mail-ru');
+        sizeOptions.classList.toggle('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('footer-ic').addEventListener('mouseleave', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('mail-ru');
+        sizeOptions.classList.remove('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('footer-ic1').addEventListener('mouseenter', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('tel-ru');
+        sizeOptions.classList.toggle('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('footer-ic1').addEventListener('mouseleave', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('tel-ru');
+        sizeOptions.classList.remove('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('footer-ic2').addEventListener('mouseenter', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('map-ru');
+        sizeOptions.classList.toggle('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('footer-ic2').addEventListener('mouseleave', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('map-ru');
+        sizeOptions.classList.remove('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('footer-ic').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('text-footer-ic');
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+    document.getElementById('footer-ic1').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('text-footer-ic1');
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+    document.getElementById('footer-ic2').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('text-footer-ic2');
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+
+<script>
+  // Функция для проверки наличия вертикального скролла
+  function hasVerticalScrollbar() {
+    return document.body.scrollHeight > window.innerHeight;
+  }
+
+  // Функция для показа или скрытия футера
+  function toggleFooter() {
+    var footer = document.getElementById('footer');
+    var scrollHeight = window.innerHeight + window.scrollY;
+    var pageHeight = document.body.offsetHeight;
+
+    if ((scrollHeight >= pageHeight && hasVerticalScrollbar()) || window.innerHeight >= pageHeight) {
+      footer.style.bottom = '0';
+    } else {
+      footer.style.bottom = '-300px';
+    }
+  }
+
+  // Вызываем функцию при загрузке страницы и при изменении размеров окна и при скролле
+  window.addEventListener('load', toggleFooter);
+  window.addEventListener('resize', toggleFooter);
+  window.addEventListener('scroll', toggleFooter);
+</script>
+
+<!--phone-->
+
+<script>
+    document.getElementById('phone-footer-ic').addEventListener('mouseenter', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('phone-mail-ru');
+        sizeOptions.classList.toggle('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('phone-footer-ic').addEventListener('mouseleave', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('phone-mail-ru');
+        sizeOptions.classList.remove('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('phone-footer-ic1').addEventListener('mouseenter', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('phone-tel-ru');
+        sizeOptions.classList.toggle('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('phone-footer-ic1').addEventListener('mouseleave', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('phone-tel-ru');
+        sizeOptions.classList.remove('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('phone-footer-ic2').addEventListener('mouseenter', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('phone-map-ru');
+        sizeOptions.classList.toggle('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('phone-footer-ic2').addEventListener('mouseleave', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('phone-map-ru');
+        sizeOptions.classList.remove('fa-shake');
+    });
+</script>
+<script>
+    document.getElementById('phone-footer-ic').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('phone-text-footer-ic');
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+    document.getElementById('phone-footer-ic1').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('phone-text-footer-ic1');
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+    document.getElementById('phone-footer-ic2').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('phone-text-footer-ic2');
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+
+<script>
+  // Функция для проверки наличия вертикального скролла
+  function hasVerticalScrollbar() {
+    return document.body.scrollHeight > window.innerHeight;
+  }
+
+  // Функция для показа или скрытия футера
+  function toggleFooter() {
+    var footer = document.getElementById('phone-footer');
+    var scrollHeight = window.innerHeight + window.scrollY;
+    var pageHeight = document.body.offsetHeight;
+
+    if ((scrollHeight >= pageHeight && hasVerticalScrollbar()) || window.innerHeight >= pageHeight) {
+      footer.style.bottom = '0';
+    } else {
+      footer.style.bottom = '-300px';
+    }
+  }
+
+  // Вызываем функцию при загрузке страницы и при изменении размеров окна и при скролле
+  window.addEventListener('load', toggleFooter);
+  window.addEventListener('resize', toggleFooter);
+  window.addEventListener('scroll', toggleFooter);
+</script>
+<script>
+  // Проверка наличия изображения по URL
+  function imageExists(url, callback) {
+    var img = new Image();
+    img.onload = function () {
+      callback(true);
+    };
+    img.onerror = function () {
+      callback(false);
+    };
+    img.src = url;
+  }
+
+  // Проверка наличия изображения перед установкой его в src тега <img>
+  var mainImage = document.getElementById("mainImage");
+  var imageUrl = mainImage.getAttribute("src");
+
+  imageExists(imageUrl, function (exists) {
+    if (!exists) {
+      // Устанавливаем путь к изображению-заглушке, если изображение не найдено
+      mainImage.setAttribute("src", "/static/js.png");
+    }
+  });
+</script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>

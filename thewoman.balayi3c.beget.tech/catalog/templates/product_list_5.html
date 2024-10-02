@@ -1,0 +1,524 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="catalog">
+<br>
+<i><h1 class="name-category">Beachwear</h1></i>
+<p class="text-category"> В разделе <b>Beachwear</b> широкая цветовая гамма и дизайн позволяют подобрать купальные костюмы любой женщине.</p>
+<hr>
+  <div class="filter-row" id="for-non-flex">
+  <div class="filter-but"><a href="#" class="btn btn-outline-light1 filter-open" id="drop-show-filter"><i class="fa-solid fa-filter"></i></a></div>
+  <div class="filter-container show-filter animate__animated animate__fadeIn" id="filter-options">
+    <i><h1 class="main-filter-title">Фильтр</h1></i>
+    <hr>
+    <br>
+<form class="filter-form" method="GET" action="{% url 'product_list_5' %}">
+      <div class="margin-filter">
+      <div class="tilt-flex">
+      <div>
+        <label for="is_in_new_key"><p class="under-line" id="drop-show-new">Новинка&nbsp;&nbsp;<i class="fa-solid fa-chevron-down fa-xs" style="color: #000000;"></i></p></label>
+        <div class="show-new" id="size-options3">
+          <div>
+            <input type="checkbox" name="is_new_key" value="Новинка" {% if "Новинка" in is_new_key %}checked{% endif %}>
+            <label for="is_new_key">Новинка</label>
+          </div>
+          <div>
+            <input type="checkbox" name="is_new_key" value="Не новинка" {% if "Не новинка" in is_new_key %}checked{% endif %}>
+            <label for="is_new_key">Не новинка</label>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div>
+          <label for="color_exists"><p class="under-line"  id="drop-show-color">Цвет&nbsp;&nbsp;<i class="fa-solid fa-chevron-down fa-xs" style="color: #000000;"></i></p></label>
+        <div class="show-color" id="size-options1">
+          {% for color in colors %}
+          <div>
+            <input type="checkbox" name="color_exists" value="{{ color.name }}" {% if color.name in color_exists %}checked{% endif %}>
+            <label for="color_exists">{{ color.name }}</label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <br>
+      <div>
+        <label for="is_sale"><p class="under-line"  id="drop-show-sale">Скидка&nbsp;&nbsp;<i class="fa-solid fa-chevron-down fa-xs" style="color: #000000;"></i></p></label>
+        <div class="show-sale" id="size-options4">
+          <div>
+            <input type="checkbox" name="is_sale" value="Скидка" {% if is_sale == True %}checked{% endif %}>
+            <label for="is_sale">Скидка</label>
+          </div>
+          <div>
+            <input type="checkbox" name="is_sale" value="Нет скидки" {% if is_sale == False %}checked{% endif %}>
+            <label for="is_sale">Нет скидки</label>
+          </div>
+        </div>
+      </div>
+          <br>
+        <div class="up-down-price active" id="sort-options">
+            <label for="sort"><p class="under-line"  id="drop-show-sort">Сортировка по цене&nbsp;&nbsp;<i class="fa-solid fa-chevron-down fa-xs" style="color: #000000;"></i></p></label>
+             <div class="show-sort-items" id="size-options5">
+                <form class="filter-form" method="GET" action="{% url 'product_list_5' %}">
+                      <div>
+                          <input type="checkbox" name="sort" value="price_asc" {% if sort == 'price_asc' %}checked{% endif %}>
+                          <label for="price_asc">По возрастанию</label>
+                        </div>
+                        <div>
+                          <input type="checkbox" name="sort" value="price_desc" {% if sort == 'price_desc' %}checked{% endif %}>
+                          <label for="price_desc">По убыванию</label>
+                        </div>
+                </form>
+             </div>
+        </div>
+      <br><br>
+   </div>
+      <button type="submit" class="btn btn-outline-light" style="margin-bottom: 4px; font-size: 24px;">Применить</button></div>
+    </form>
+  <div class="clear-filter-form clear-filter-inx">
+    <form class="filter-form" method="GET" action="{% url 'product_list_5' %}">
+        <input type="hidden" name="clear_filter" value="true">
+        <button type="submit" class="btn-clear">Очистить фильтрацию</button><span>&nbsp;</span>
+  </form>
+  </div>
+  </div>
+      <div></div><div class="up-down-price_and_filter_form"><div>
+  </div></div>
+          <div class="selected-filters" style="inline-block;">
+              {% if is_new_key or is_in_stock_key or color_exists or selected_sizes  %}
+              <span>Фильтр: </span>
+              {% endif %}
+                    {% if is_new_key %}
+                      <div class="filter-item">
+                        <span>{{ is_new_key }}</span>
+                        <a href="{% url 'product_list_4' %}?{% if request.GET.is_in_stock_key %}is_in_stock_key={{ request.GET.is_in_stock_key }}&{% endif %}{% if request.GET.color %}color={{ request.GET.color }}&{% endif %}{% if request.GET.size %}size={{ request.GET.size }}&{% endif %}{% if request.GET.is_sale %}is_sale={{ request.GET.is_new }}&{% endif %}{%if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}" class="filter-clear">×</a>
+                      </div>
+                    {% endif %}
+
+                    {% if color_exists %}
+                    <div class="filter-item">
+                        <span>
+                            {% for color in color_exists %}
+                                {{ color }}
+                                {% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                        <a href="{% url 'product_list_4' %}?{% if is_new_key %}is_new_key={{ is_new_key }}&{% endif %}{% if is_in_stock_key %}is_in_stock_key={{ is_in_stock_key }}&{% endif %}{% if selected_sizes %}size[]={{ selected_sizes|join:'&size[]=' }}&{% endif %}{% if request.GET.is_sale %}is_sale={{ request.GET.is_new }}&{% endif %}{%if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}" class="filter-clear">×</a>
+                    </div>
+                    {% endif %}
+
+                    {% if is_sale %}
+                        <div class="filter-item">
+                        <span>{{ is_sale }}</span>
+                        <a href="{% url 'product_list_4' %}?{% if request.GET.is_new_key %}is_new_key={{ request.GET.is_new_key }}&{% endif %}{% if is_in_stock_key %}is_in_stock_key={{ is_in_stock_key }}&{% endif %}{% if request.GET.color %}color={{ request.GET.color }}&{% endif %}{% if request.GET.size %}size={{ request.GET.size }}&{% endif %}{%if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}" class="filter-clear">×</a>
+                      </div>
+                    {% endif %}
+              </div>
+          <div id="rubble-u" class="rubble-u"><i class="fa-solid fa-ruble-sign fa-lg" style="color: #000000;"></i><i class="fa-solid fa-arrow-up fa-lg" style="color: #000000; margin-left: 0.75px;"></i></div>
+          <div id="rubble-d" class="rubble-d"><i class="fa-solid fa-ruble-sign fa-lg" style="color: #000000;"></i><i class="fa-solid fa-arrow-down fa-lg" style="color: #000000; margin-left: 0.75px;"></i></div>
+         <form method="get" class="search-form filter-item-search">
+            <div class='flex-search-helper'>
+                <div class='help-part-1'>
+                    <input type="text" name="q" class="search-input-ro" placeholder="Поиск по артикулу или названию" value="{{ request.GET.q }}">
+                    <button class="btn btn-outline-light1 marg-but" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <div class='help-part-2' style='margin-top: -5px;'>
+                    <p style='font-size: 12px;'><i>* Поиск проводится по всем категориям.</i></p>
+                </div>
+            </div>
+          </form>
+          </div>
+            {% if request.GET.q %}
+                <div class="search-info">
+                    <p class="none-margin-bottom">Поиск был проведен по всем категориям.</p><br>
+                </div>            
+                <div class="search-info">
+                    <p class="none-margin-bottom">Результат поиска по запросу: <u>{{ request.GET.q }}</u></p>
+                    <button class="search-clear-button" onclick="clearSearch()" style="font-size: 17px;"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#000000}</style><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z"/></svg></button>
+                    <br>
+                </div>
+          <div class="container-fluid">
+            <div class="row products">
+        {% for product in page_obj %}
+                 <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 cards-catalog">
+                      <div class="card mb-4 shadow-sm animate__animated animate__fadeIn my-card" style="background: #fff;"><!--700 поменять-->
+          <a href="{{ product.get_absolute_url }}" class="product-link">
+               <div class="card-body">
+            <div class="wrapper-text">
+              <span class="article-text">Артикул: {{ product.article }}</span>
+              <span class="article-text">&#171;Пляжная одежда&#187;</span>
+            </div>
+          <div class="image-container">
+            <img src="{{ product.mainimage.url }}" id="mainImage-{{ product.id }}" class="main-image">
+            {% if product.is_in_new_key == 'Новинка' and product.is_sale != 'Скидка' %}
+                <i class="fa-solid fa-fire fa-2xl main-image image-overlay" style="color: #ff9500; margin-top: 17px;"></i>
+            {% endif %}
+            {% if product.is_sale == 'Скидка' %}
+                <i class="fa-solid fa-percent fa-2xl main-image image-overlay" style="color: #ff9500; margin-top: 17px;"></i>
+            {% endif %}
+            </div>
+            <img src="{{ product.mainimage.url }}" width="30px" height="40px" class="thumbnail selected" data-mainimage="{{ product.mainimage.url }}" data-product-id="{{ product.id }}">
+            {% if product.color_image1 %}
+              <img src="{{ product.color_image1.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image1.url }}" data-product-id="{{ product.id }}">
+            {% endif %}
+            {% if product.color_image2 %}
+              <img src="{{ product.color_image2.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image2.url }}" data-product-id="{{ product.id }}">
+            {% endif %}
+        {% if product.color_image3 %}
+          <img src = "{{ product.color_image3.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image3.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image4 %}
+          <img src = "{{ product.color_image4.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image4.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image5 %}
+          <img src = "{{ product.color_image5.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image5.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image6 %}
+          <img src = "{{ product.color_image6.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image6.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image7 %}
+          <img src = "{{ product.color_image7.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image7.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image8 %}
+          <img src = "{{ product.color_image8.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image8.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image9 %}
+          <img src = "{{ product.color_image9.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image9.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image10 %}
+          <img src = "{{ product.color_image10.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image10.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        <hr class="name-hr-up">
+        <div class="descp-x">
+            <span class="product-name">{{ product.name }}</span><br>
+        </div>
+        <hr class="name-hr-down">
+                   <span style="display: none;" id="product-data" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}">{{ product.id }}</span>
+        <div class="descp">
+            {% if product.is_sale == "Нет скидки" %}
+            <div class="price-stroke">
+                <div class="shadow-sm price-x">
+                    <span id="product-price-x-{{ product.id }}" class="product-price">{{ product.price }} &#8381;</span>
+                </div>
+                <!--<span class="pc-l">&nbsp;</span>-->
+                <div class="price-y">
+                    <span style="display: none;" id="product-num-of-products-{{ product.id }}">{{ product.num_of_products_in_packet }}</span>
+                    <span class="product-price-sm"><u><span id="out-sum-{{ product.id }}"></span> &#8381; за {{ product.name_of_clothe.name }}</u></span>
+                </div>
+            </div>
+            {% else %}
+            <div class="price-stroke">
+                <div class="shadow-sm price-x">
+                    <span id="product-price-x-{{ product.id }}" style="white-space: nowrap;">{{ product.price }} &#8381;</span><span class="product-price" style="color: red; font-size: 14px;"><s>&nbsp;{{ product.sale_price }} &#8381;</s></span>
+                </div>
+                <!--<span class="pc-l">&nbsp;</span>-->
+                <div class="price-y">
+                    <span style="display: none;" id="product-num-of-products-{{ product.id }}">{{ product.num_of_products_in_packet }}</span>
+                    <span class="product-price-sm"><u><span id="out-sum-{{ product.id }}"></span> &#8381; за {{ product.name_of_clothe.name }}</u></span>
+                </div>
+            </div>
+            {% endif %}
+            <div class="mini-info">
+                <!--<div class="price_for_one">Цена за {{ product.name_of_clothe }}: {{ product.price_for_one_position }} &#8381;</div>-->
+                <div class="colors_exist_now">Цветов: {{ product.num_of_colors }}</div>
+                {% if product.size != 'NoneSize' %}
+                <div class="size-cup">Размер чашки: {{ product.size }}</div>
+                {% else %}
+                <div class="size-cup" style="display: none;"></div>
+                {% endif %}
+                {% if user.is_staff %}
+                <div class="product-actions">
+                    <form method="post" action="{% url 'update_product' product.id %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Обновить">
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+               </div> </a></div></div>
+{% endfor %}
+</div>
+
+{% else %}
+
+<div class="row products">
+        {% for product in page_obj %}
+                 <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 cards-catalog">
+                      <div class="card mb-4 shadow-sm animate__animated animate__fadeIn my-card" style="background: #fff;"><!--700 поменять-->
+          <a href="{{ product.get_absolute_url }}" class="product-link">
+               <div class="card-body">
+            <div class="wrapper-text">
+              <span class="article-text">Артикул: {{ product.article }}</span>
+              <span class="article-text">&#171;Пляжная одежда&#187;</span>
+            </div>
+          <div class="image-container">
+            <img src="{{ product.mainimage.url }}" id="mainImage-{{ product.id }}" class="main-image">
+            {% if product.is_in_new_key == 'Новинка' and product.is_sale != 'Скидка' %}
+                <i class="fa-solid fa-fire fa-2xl main-image image-overlay" style="color: #ff9500; margin-top: 17px;"></i>
+            {% endif %}
+            {% if product.is_sale == 'Скидка' %}
+                <i class="fa-solid fa-percent fa-2xl main-image image-overlay" style="color: #ff9500; margin-top: 17px;"></i>
+            {% endif %}
+            </div>
+            <img src="{{ product.mainimage.url }}" width="30px" height="40px" class="thumbnail selected" data-mainimage="{{ product.mainimage.url }}" data-product-id="{{ product.id }}">
+            {% if product.color_image1 %}
+              <img src="{{ product.color_image1.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image1.url }}" data-product-id="{{ product.id }}">
+            {% endif %}
+            {% if product.color_image2 %}
+              <img src="{{ product.color_image2.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image2.url }}" data-product-id="{{ product.id }}">
+            {% endif %}
+        {% if product.color_image3 %}
+          <img src = "{{ product.color_image3.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image3.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image4 %}
+          <img src = "{{ product.color_image4.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image4.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image5 %}
+          <img src = "{{ product.color_image5.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image5.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image6 %}
+          <img src = "{{ product.color_image6.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image6.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image7 %}
+          <img src = "{{ product.color_image7.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image7.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image8 %}
+          <img src = "{{ product.color_image8.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image8.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image9 %}
+          <img src = "{{ product.color_image9.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image9.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        {% if product.color_image10 %}
+          <img src = "{{ product.color_image10.url }}" width="30px" height="40px" class="thumbnail" data-mainimage="{{ product.color_image10.url }}" data-product-id="{{ product.id }}">
+        {% endif %}
+        <hr class="name-hr-up">
+        <div class="descp-x">
+            <span class="product-name">{{ product.name }}</span><br>
+        </div>
+        <hr class="name-hr-down">
+                   <span style="display: none;" id="product-data" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}">{{ product.id }}</span>
+        <div class="descp">
+            {% if product.is_sale == "Нет скидки" %}
+            <div class="price-stroke">
+                <div class="shadow-sm price-x">
+                    <span id="product-price-x-{{ product.id }}" class="product-price">{{ product.price }} &#8381;</span>
+                </div>
+                <!--<span class="pc-l">&nbsp;</span>-->
+                <div class="price-y">
+                    <span style="display: none;" id="product-num-of-products-{{ product.id }}">{{ product.num_of_products_in_packet }}</span>
+                    <span class="product-price-sm"><u><span id="out-sum-{{ product.id }}"></span> &#8381; за {{ product.name_of_clothe.name }}</u></span>
+                </div>
+            </div>
+            {% else %}
+            <div class="price-stroke">
+                <div class="shadow-sm price-x">
+                    <span id="product-price-x-{{ product.id }}" style="white-space: nowrap;">{{ product.price }} &#8381;</span><span class="product-price" style="color: red; font-size: 14px;"><s>&nbsp;{{ product.sale_price }} &#8381;</s></span>
+                </div>
+                <!--<span class="pc-l">&nbsp;</span>-->
+                <div class="price-y">
+                    <span style="display: none;" id="product-num-of-products-{{ product.id }}">{{ product.num_of_products_in_packet }}</span>
+                    <span class="product-price-sm"><u><span id="out-sum-{{ product.id }}"></span> &#8381; за {{ product.name_of_clothe.name }}</u></span>
+                </div>
+            </div>
+            {% endif %}
+            <div class="mini-info">
+                <!--<div class="price_for_one">Цена за {{ product.name_of_clothe }}: {{ product.price_for_one_position }} &#8381;</div>-->
+                <div class="colors_exist_now">Цветов: {{ product.num_of_colors }}</div>
+                {% if product.size != 'NoneSize' %}
+                <div class="size-cup">Размер чашки: {{ product.size }}</div>
+                {% else %}
+                <div class="size-cup" style="display: none;"></div>
+                {% endif %}
+                {% if user.is_staff %}
+                <div class="product-actions">
+                    <form method="post" action="{% url 'update_product' product.id %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Обновить">
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+               </div> </a></div></div>
+{% endfor %}
+</div>
+{% endif %}
+
+<div class="pagination">
+    <span class="step-links" style="font-size: 24px;">
+        {% if page_obj.has_previous %}
+            {% if request.GET.color_exists %}
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}&is_new_key={{ request.GET.is_new_key }}&is_in_stock_key={{ request.GET.is_in_stock_key }}&color_exists={{ request.GET.color_exists }}&{% for size in selected_sizes %}&size[]={{ size }}{% endfor %}&is_sale={{ request.GET.is_sale }}&sort={{ request.GET.sort }}"><i class="fa-solid fa-circle-arrow-left fa-xs" style="color: grey;"></i></a>
+            {% else %}
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}&is_new_key={{ request.GET.is_new_key }}&is_in_stock_key={{ request.GET.is_in_stock_key }}&{% for size in selected_sizes %}&size[]={{ size }}{% endfor %}&is_sale={{ request.GET.is_sale }}&sort={{ request.GET.sort }}"><i class="fa-solid fa-circle-arrow-left fa-xs" style="color: grey;"></i></a>
+            {% endif %}
+        {% endif %}
+
+        {% for i in page_obj.paginator.page_range %}
+            {% if page_obj.number == i %}
+                <span class="current" style="color: #000;">
+                    {{ page_obj.number }}
+                </span>
+            {% else %}
+                {% if request.GET.color_exists %}
+                    <a style="color: grey;" href="?page={{ i }}&q={{ request.GET.q }}&is_new_key={{ request.GET.is_new_key }}&is_in_stock_key={{ request.GET.is_in_stock_key }}&color_exists={{ request.GET.color_exists }}&{% for size in selected_sizes %}&size[]={{ size }}&{% endfor %}&is_sale={{ request.GET.is_sale }}&sort={{ request.GET.sort }}">{{ i }}</a>
+                {% else %}
+                    <a style="color: grey;" href="?page={{ i }}&q={{ request.GET.q }}&is_new_key={{ request.GET.is_new_key }}&is_in_stock_key={{ request.GET.is_in_stock_key }}&{% for size in selected_sizes %}&size[]={{ size }}&{% endfor %}&is_sale={{ request.GET.is_sale }}&sort={{ request.GET.sort }}">{{ i }}</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            {% if request.GET.color_exists %}
+                <a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}&is_new_key={{ request.GET.is_new_key }}&is_in_stock_key={{ request.GET.is_in_stock_key }}&color_exists={{ request.GET.color_exists }}&{% for size in selected_sizes %}&size[]={{ size }}{% endfor %}&is_sale={{ request.GET.is_sale }}&sort={{ request.GET.sort }}"><i class="fa-solid fa-circle-arrow-right fa-xs" style="color: grey;"></i></a>
+            {% else %}
+                <a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}&is_new_key={{ request.GET.is_new_key }}&is_in_stock_key={{ request.GET.is_in_stock_key }}&{% for size in selected_sizes %}&size[]={{ size }}{% endfor %}&is_sale={{ request.GET.is_sale }}&sort={{ request.GET.sort }}"><i class="fa-solid fa-circle-arrow-right fa-xs" style="color: grey;"></i></a>
+            {% endif %}
+        {% endif %}
+    </span>
+</div>
+
+
+
+          </div></div>
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><div class="phone-br"><br><br><br><br><br><br><br><br></div>
+<script>
+    var search = window.location.search;
+    console.log(search);
+    if (search.includes('sort=price_asc')) {
+        var sizeOptions = document.getElementById('rubble-u');
+        sizeOptions.classList.toggle('active');
+    }
+    if (search.includes('sort=price_desc')) {
+        var sizeOptions = document.getElementById('rubble-d');
+        sizeOptions.classList.toggle('active');
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Получение значений из элементов HTML
+        const productItems = document.querySelectorAll('.col-12');
+
+        for (let i = 0; i < productItems.length; i++) {
+            const productItem = productItems[i];
+
+            const productDataElement = productItem.querySelector('#product-data');
+            const productId = productDataElement.dataset.productId;
+            const productName = productDataElement.dataset.productName;
+            console.log(productId, productName);
+            const productPrice = parseFloat(productItem.querySelector('#product-price-x-' + productId).innerText);
+            const numOfProducts = parseInt(productItem.querySelector('#product-num-of-products-' + productId).innerText);
+
+            // Вычисление цены за единицу товара
+            const pricePerUnit = productPrice / numOfProducts;
+
+            // Получение элемента для вывода результата
+            const outSumElement = productItem.querySelector('#out-sum-' + productId);
+
+            // Установка значения в элементе
+            outSumElement.innerText = pricePerUnit.toFixed(0); // Округление до двух знаков после запятой
+            console.log(i);
+        }
+    });
+</script>
+<script>
+    if (!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|Windows Phone)/)) {
+        // Код, который нужно выполнить только на компьютере
+        $("input[placeholder]").each(function () {
+            $(this).attr('size', $(this).attr('placeholder').length);
+        });
+    }
+</script>
+<script>
+    function clearSearch() {
+        // Очищаем значение поля ввода
+        document.querySelector('.search-input-ro').value = '';
+
+        // Перенаправляем на страницу без параметра "q" в URL
+        window.location.href = '{{ request.path }}';
+    }
+</script>
+<script>
+    document.getElementById('drop-show-filter').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('for-non-flex');
+        sizeOptions.classList.toggle('isblock');
+    });
+</script>
+<script>
+    document.getElementById('drop-show-filter').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('drop-show-filter');
+        sizeOptions.classList.toggle('none-border');
+    });
+</script>
+<script>
+    document.getElementById('drop-show-color').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('size-options1');
+        $(this).find(".fa-chevron-down, .fa-chevron-up").toggleClass("fa-chevron-down fa-chevron-up");
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+    document.getElementById('drop-show-size').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('size-options');
+        $(this).find(".fa-chevron-down, .fa-chevron-up").toggleClass("fa-chevron-down fa-chevron-up");
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+    document.getElementById('drop-show-new').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('size-options3');
+        $(this).find(".fa-chevron-down, .fa-chevron-up").toggleClass("fa-chevron-down fa-chevron-up");
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+    document.getElementById('drop-show-sale').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('size-options4');
+        $(this).find(".fa-chevron-down, .fa-chevron-up").toggleClass("fa-chevron-down fa-chevron-up");
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+    document.getElementById('drop-show-sort').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('size-options5');
+        $(this).find(".fa-chevron-down, .fa-chevron-up").toggleClass("fa-chevron-down fa-chevron-up");
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+    document.getElementById('drop-show-filter').addEventListener('click', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('filter-options');
+        sizeOptions.classList.toggle('active');
+    });
+</script>
+<script>
+$(document).ready(function() {
+  $(".thumbnail").mouseenter(function() {
+    var productId = $(this).data('product-id');
+    var mainImage = $("#mainImage-" + productId);
+    var newImage = $(this).data("mainimage");
+    mainImage.attr("src", newImage);
+  });
+
+  $(".thumbnail").mouseenter(function() {
+    var productId = $(this).data('product-id');
+    $(".thumbnail[data-product-id='" + productId + "']").removeClass("selected");
+    $(this).addClass("selected");
+    $("#mainImage-" + productId).siblings(".main-image").removeClass("selected");
+    $("#mainImage-" + productId).addClass("selected");
+  });
+});
+</script>
+{% endblock %}

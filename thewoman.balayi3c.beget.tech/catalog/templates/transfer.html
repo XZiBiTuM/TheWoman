@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Перенос папок</title>
+</head>
+<body>
+    <form method="post" action="{% url 'transfer_folders' %}">
+        {% csrf_token %}
+        <button type="submit">Перенести папки</button>
+    </form>
+</body>
+</html>

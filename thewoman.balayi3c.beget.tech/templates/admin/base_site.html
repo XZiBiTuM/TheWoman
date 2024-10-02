@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<script src="/static/admin_custom.js"></script>
+<style>
+    .nmt {
+        border-radius: 7px;
+        padding: 10px;
+    }
+    .nmt:hover {
+        border-radius: 7px;
+        padding: 10px;
+        background: grey;
+    }
+</style>
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+<form method="post" action="{% url 'transfer_folders' %}">
+        {% csrf_token %}
+        <button type="submit" class="nmt">Обновить</button>
+    </form>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

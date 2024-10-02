@@ -1,0 +1,94 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="animate__animated animate__fadeIn">
+        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A7668f73d2919afe868c20023e413806d8b7f1adef64f7708c07ecab5d26f66cc&amp;width=100%25&amp;height=720&amp;lang=ru_RU&amp;scroll=true"></script>
+    </div>
+<div class="about-us-all animate__animated animate__fadeIn">
+    <div class="about-company animate__animated animate__fadeIn">
+        <h1>ООО "THE WOMAN"</h1>
+        <h5>Интернет-магазин</h5>
+        <hr>
+        <p>Россия, Ростовская обл.,
+ Ростов-на-Дону,
+ул. Лелюшенко, 11 </p>
+        <h3>8 (928) 229-73-85</h3>
+        <h3>8 (800) 500-85-40</h3>
+        <p>sales@optombelie.ru</p>
+        <p>info@optombelie.ru</p>
+        <p>График работы: с 9.00. до 17.00.</p>
+        <p style="color: red;">Выходной: суббота, воскресенье </p>
+    </div>
+    <hr>
+    <div class="about-delivery animate__animated animate__fadeIn">
+        <h1>Доставка</h1><br>
+        <h2 id="del-truck"><i id="icon-truck" class="fa-solid fa-truck-fast fa-2xl" style="color: #000000;"></i></h2>
+        <div class="about-company">
+        <h4><b>Доставка осуществляется транспортной компанией по России и СНГ.</b></h4>
+        <h4><b>Список компаний с которыми мы работаем:</b></h4>
+        <h5>Транспортная компания "ПЭК" тел./факс: <div class="phone-br"><br></div><a class="tel-ru-del" href="tel:84959258814">8 (495) 925-88-14</a></h5><div class="phone-br"><br><br></div>
+        <h5>Транспортная компания "Желдорэкспедиция" тел.: <div class="phone-br"><br></div><a class="tel-ru-del" href="tel:88001005505">8 (800) 100-55-05</a></h5><div class="phone-br"><br><br></div>
+        <h5>Транспортная компания "Деловый линии" тел.: <div class="phone-br"><br></div><a class="tel-ru-del" href="tel:88001008000">8 (800) 100-80-00</a></h5><div class="phone-br"><br><br></div>
+        <h5>Транспортная компания "КИТ" тел.: <div class="phone-br"><br></div><a class="tel-ru-del" href="tel:84956408689">8 (495) 640-86-89</a></h5><div class="phone-br"><br><br></div>
+        <h5>Транспортная компания "Энергия" тел.: <div class="phone-br"><br></div><a class="tel-ru-del" href="tel:88007007000">8 (800) 700-70-00</a></h5><div class="phone-br"><br><br></div>
+        <h5>Транспортная компания "СДЭК" тел.: <div class="phone-br"><br></div><a class="tel-ru-del" href="tel:88002500405">8 (800) 250-04-05</a></h5><div class="phone-br"><br><br></div>
+        <br>
+        </div>
+        <hr>
+        <div class="flex-delivery-comp">
+            <div class="flex-item-del" style="margin-right: 2%;">
+                <img src="/static/pek.png" height="100px" alt="1">
+                <br>
+                <b><div class="flex-item-del-text">Первая Экспедиционная Компания</div></b>
+                <div class="flex-item-del-mini-text">Транспортная компания</div>
+            </div>
+            <div class="flex-item-del" style="margin-right: 2%;">
+                <img src="/static/jel.png" height="100px" alt="2">
+                <br>
+                <b><div class="flex-item-del-text">ЖелДор Экспедиция</div></b>
+                <div class="flex-item-del-mini-text">Международная транспортная компания</div>
+            </div>
+            <div class="flex-item-del" style="margin-right: 2%;">
+                <img src="/static/delovye-linii-logo.png" height="100px" alt="3">
+                <br>
+                <b><div class="flex-item-del-text">Деловые Линии</div></b>
+                <div class="flex-item-del-mini-text">Транспортно-экспедиторская компания</div>
+            </div>
+            <div class="flex-item-del" style="margin-right: 2%;">
+                <img src="/static/kit.png" height="100px" alt="4">
+                <br>
+                <b><div class="flex-item-del-text">КИТ</div></b>
+                <div class="flex-item-del-mini-text">Транспортная компания</div>
+            </div>
+            <div class="flex-item-del" style="margin-right: 2%;">
+                <img src="/static/sdek.png" height="100px" alt="4">
+                <br>
+                <b><div class="flex-item-del-text">СДЭК</div></b>
+                <div class="flex-item-del-mini-text">Транспортная компания</div>
+            </div>
+            <div class="flex-item-del">
+                <img src="/static/energy.png" height="100px" alt="4">
+                <br>
+                <b><div class="flex-item-del-text">Энергия</div></b>
+                <div class="flex-item-del-mini-text">Международная транспортная компания</div>
+            </div>
+        </div>
+    </div></div><div class="phone-br"><br><br><br><br><br><br></div>
+
+<script>
+    document.getElementById('del-truck').addEventListener('mouseenter', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('icon-truck');
+        sizeOptions.classList.toggle('fa-beat');
+    });
+</script>
+<script>
+    document.getElementById('del-truck').addEventListener('mouseleave', function(event) {
+        event.preventDefault();
+        var sizeOptions = document.getElementById('icon-truck');
+        sizeOptions.classList.remove('fa-beat');
+    });
+</script>
+{% endblock %}

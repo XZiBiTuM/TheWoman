@@ -1,0 +1,925 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+      <div class="card-product animate__animated animate__fadeIn">
+          <span><a href="#" onclick="history.back()" class="go-back"><i class="fa-solid fa-angle-left fa-2xl" style="color: #000000;"></i></a>&nbsp;
+          <a href="#" onclick="history.back()" class="go-back"><span style="text-decoration: underline;">Назад</span></a></span>
+
+          <div class="main-card-info">
+            <p class="article-pr">Артикул: {{ product.article }}</p>
+          <div class="pr-flexbox">
+            <div class="fill-images-flex">
+            <div class="pr-images">
+              <div class="main-image-diff">
+                <img src="{{ product.mainimage.url }}" style="width: 100%; height: 100%; border-radius: 20px;" id="mainImage">
+              </div>
+              <div class="any-images">
+                  <div style="margin-right: .95%;">
+                  <img src = "{{ product.mainimage.url }}" class="mini-image thumbnail selected" data-mainimage="{{ product.mainimage.url }}">
+                  </div><div style="margin-right: .95%;">
+                  {% if product.image1 %}
+                    <img src = "{{ product.image1.url }}" class="mini-image thumbnail" data-mainimage="{{ product.image1.url }}">
+                  {% endif %}
+                  </div><div style="margin-right: .95%;">
+                  {% if product.image2 %}
+                    <img src = "{{ product.image2.url }}" class="mini-image thumbnail" data-mainimage="{{ product.image2.url }}">
+                  {% endif %}
+                  </div><div style="margin-right: .95%;">
+                  {% if product.image3 %}
+                    <img src = "{{ product.image3.url }}" class="mini-image thumbnail" data-mainimage="{{ product.image3.url }}">
+                  {% endif %}
+                  </div><div style="margin-right: .95%;">
+                  {% if product.image4 %}
+                    <img src = "{{ product.image4.url }}" class="mini-image thumbnail" data-mainimage="{{ product.image4.url }}">
+                  {% endif %}
+                  </div><div style="margin-right: .95%;">
+                  {% if product.image5 %}
+                    <img src = "{{ product.image5.url }}" class="mini-image thumbnail" data-mainimage="{{ product.image5.url }}">
+                  {% endif %}
+                  </div><div style="margin-right: .95%;">
+                  {% if product.image6 %}
+                    <img src = "{{ product.image6.url }}" class="mini-image thumbnail" data-mainimage="{{ product.image6.url }}">
+                  {% endif %}
+                  </div><div style="margin-right: .95%;">
+                  {% if product.image7 %}
+                    <img src = "{{ product.image7.url }}" class="mini-image thumbnail" data-mainimage="{{ product.image7.url }}">
+                  {% endif %}
+                  </div><div style="margin-right: .95%;">
+                  {% if product.image8 %}
+                    <img src = "{{ product.image8.url }}" class="mini-image thumbnail" data-mainimage="{{ product.image8.url }}">
+                  {% endif %}
+                  </div>
+              </div>
+            </div>
+            </div>
+            <div class="text-product-flex">
+              <div class="title-pr">
+                <h1>{{ product.name }}</h1><span>&nbsp;</span>
+              </div>
+                <hr>
+              <div class="flex-descp" id="flex-descp">
+              <div class="descp-info">
+                <div class="one-part-flexbot">
+                <h4 class="pr-description-text" id="pr-description-text">{{ product.formatted_description }}</h4><br>
+                {% if product.is_sale == 'Нет скидки' %}
+                    <p>Цена за упаковку: <span id="product-price-x">{{ product.price }}</span> ₽</p>
+                {% endif %}
+                {% if product.is_sale == 'Скидка' %}
+                    <p>Цена за упаковку: <span id="product-price-x">{{ product.price }}</span> ₽ <span style="font-size: 16px; color: red;"><s>{{ product.sale_price }} ₽</s></span></p>
+                {% endif %}
+                <p>Количество товара в упаковке: <span id="product-num-of-products">{{ product.num_of_products_in_packet }}</span></p>
+                {% if product.size != "NoneSize" %}
+                <p>Размер чашечки: {{ product.size }}</p>
+                {% endif %}
+                <p>Цена за {{ product.name_of_clothe }}: <span id="out-sum"></span> &#8381;</p>
+                <div class="two-tables">
+                  {% if product.is_set == True %}
+                    <div class="table_and_text" style="margin-bottom: 15px;">
+                        {% if product.type.name == 'тунику' %}
+                    <div class="text-table">Размеры туники:</div>
+                    {% endif %}
+                        {% if product.type.name == 'аксессуар' %}
+                    <div class="text-table">Размеры аксессуара:</div>
+                    {% endif %}
+                        {% if product.type.name == 'сорочку' %}
+                    <div class="text-table">Размеры сорочки:</div>
+                    {% endif %}
+                        {% if product.type.name == 'платье' %}
+                    <div class="text-table">Размеры платья:</div>
+                    {% endif %}
+                        {% if product.type.name == 'бюстгальтер' %}
+                    <div class="text-table">Размеры бюстгальтера:</div>
+                    {% endif %}
+                        {% if product.type.name == 'бандаж' %}
+                    <div class="text-table">Размеры бандажа:</div>
+                    {% endif %}
+                        {% if product.type.name == 'маску' %}
+                    <div class="text-table">Размеры маски:</div>
+                    {% endif %}
+                        {% if product.type.name == 'пояс' %}
+                    <div class="text-table">Размеры пояса:</div>
+                    {% endif %}
+                        {% if product.type.name == 'пижаму' %}
+                    <div class="text-table">Размеры пижамы:</div>
+                    {% endif %}
+                        {% if product.type.name == 'трусы' %}
+                    <div class="text-table">Размеры трусов:</div>
+                    {% endif %}
+                        {% if product.type.name == 'халат/пеньюар' %}
+                    <div class="text-table">Размеры халатов/<br>пеньюаров:</div>
+                    {% endif %}
+                        {% if product.type.name == 'эротическое белье' %}
+                    <div class="text-table">Размеры эротического белья:</div>
+                    {% endif %}
+                        {% if product.type.name == 'одежду' %}
+                    <div class="text-table">Размеры одежды:</div>
+                    {% endif %}
+                        {% if product.type.name == 'комплект' %}
+                    <div class="text-table">Размеры комплекта:</div>
+                    {% endif %}
+                    <span class="nbsp-pc">&nbsp;&nbsp;</span>
+                    <div class="tble">
+                        <table class="size-table">
+                           <tbody>
+                             <tr style="text-align: center;">
+                               {% if product.num_of_size_70 != 0 %}
+                               {% if product.num_of_size_75 != 0 or product.num_of_size_80 != 0 or product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td>{{ product.size_70 }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_70 }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_75 != 0 %}
+                               {% if product.num_of_size_80 != 0 or product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td>{{ product.size_75 }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_75 }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_80 != 0 %}
+                               {% if product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td>{{ product.size_80 }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_80 }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_85 != 0 %}
+                               {% if product.num_of_size_90 != 0 %}
+                               <td>{{ product.size_85 }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_85 }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_90 != 0 %}
+                               <td style="border-right: none;">{{ product.size_90 }}</td>
+                               {% endif %}
+                             </tr>
+                             <tr style="text-align: center;">
+                               {% if product.num_of_size_70 != 0 %}
+                               {% if product.num_of_size_75 != 0 or product.num_of_size_80 != 0 or product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_70 }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_70 }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_75 != 0 %}
+                               {% if product.num_of_size_80 != 0 or product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_75 }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_75 }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_80 != 0 %}
+                               {% if product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_80 }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_80 }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_85 != 0 %}
+                               {% if product.num_of_size_90 != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_85 }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_85 }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_90 != 0 %}
+                               <td style="border-right: none; border-bottom: none;">{{ product.num_of_size_90 }} шт.</td>{% endif %}
+                             </tr>
+                             </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                    <div class="table_and_text">
+                        {% if product.secondary.name == 'тунику' %}
+                    <div class="text-table">Размеры туники:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'аксессуар' %}
+                    <div class="text-table">Размеры аксессуара:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'сорочку' %}
+                    <div class="text-table">Размеры сорочки:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'платье' %}
+                    <div class="text-table">Размеры платья:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'бюстгальтер' %}
+                    <div class="text-table">Размеры бюстгальтера:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'бандаж' %}
+                    <div class="text-table">Размеры бандажа:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'маску' %}
+                    <div class="text-table">Размеры маски:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'пояс' %}
+                    <div class="text-table">Размеры пояса:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'пижаму' %}
+                    <div class="text-table">Размеры пижамы:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'трусы' %}
+                    <div class="text-table">Размеры трусов:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'халат/пеньюар' %}
+                    <div class="text-table">Размеры халатов/<br>пеньюаров:</div>
+                    {% endif %}
+                        {% if product.secondary.name == 'эротическое белье' %}
+                    <div class="text-table">Размеры эротического белья:</div>
+                    {% endif %}
+                        {% if product.type.name == 'одежду' %}
+                    <div class="text-table">Размеры одежды:</div>
+                    {% endif %}
+                        {% if product.type.name == 'комплект' %}
+                    <div class="text-table">Размеры комплекта:</div>
+                    {% endif %}
+                    <span class="nbsp-pc">&nbsp;&nbsp;</span>
+                    <div class="tble">
+                        <table class="size-table">
+                           <tbody>
+                             <tr style="text-align: center;">
+                               {% if product.num_of_size_xs != 0 %}
+                               {% if product.num_of_size_s != 0 or product.num_of_size_m != 0 or product.num_of_size_l != 0 or product.num_of_size_xl != 0 %}
+                               <td>{{ product.size_xs }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_xs }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_s != 0 %}
+                               {% if product.num_of_size_m != 0 or product.num_of_size_l != 0 or product.num_of_size_xl != 0 %}
+                               <td>{{ product.size_s }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_s }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_m != 0 %}
+                               {% if product.num_of_size_l != 0 or product.num_of_size_xl != 0 %}
+                               <td>{{ product.size_m }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_m }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_l != 0 %}
+                               {% if product.num_of_size_xl != 0 %}
+                               <td>{{ product.size_l }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_l }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_xl != 0 %}
+                               <td style="border-right: none;">{{ product.size_xl }}</td>
+                               {% endif %}
+                             </tr>
+                             <tr style="text-align: center;">
+                               {% if product.num_of_size_xs != 0 %}
+                               {% if product.num_of_size_s != 0 or product.num_of_size_m != 0 or product.num_of_size_l != 0 or product.num_of_size_xl != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_xs }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_xs }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_s != 0 %}
+                               {% if product.num_of_size_m != 0 or product.num_of_size_l != 0 or product.num_of_size_xl != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_s }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_s }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_m != 0 %}
+                               {% if product.num_of_size_l != 0 or product.num_of_size_xl != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_m }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_m }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_l != 0 %}
+                               {% if product.num_of_size_xl != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_l }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_l }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_xl != 0 %}
+                               <td style="border-right: none; border-bottom: none;">{{ product.num_of_size_xl }} шт.</td>{% endif %}
+                             </tr>
+                             </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+
+
+                {% if product.is_set == False %}
+                    <div class="table_and_text" style="margin-bottom: 15px;">
+                    {% if product.type.name == 'бюстгальтер' %}
+                    <div class="text-table">Размеры бюстгальтера:</div>
+                    {% endif %}
+                        {% if product.type.name == 'тунику' %}
+                    <div class="text-table">Размеры туники:</div>
+                    {% endif %}
+                        {% if product.type.name == 'аксессуар' %}
+                    <div class="text-table">Размеры аксессуара:</div>
+                    {% endif %}
+                        {% if product.type.name == 'сорочку' %}
+                    <div class="text-table">Размеры сорочки:</div>
+                    {% endif %}
+                        {% if product.type.name == 'платье' %}
+                    <div class="text-table">Размеры платья:</div>
+                    {% endif %}
+                        {% if product.type.name == 'бандаж' %}
+                    <div class="text-table">Размеры бандажа:</div>
+                    {% endif %}
+                        {% if product.type.name == 'маску' %}
+                    <div class="text-table">Размеры маски:</div>
+                    {% endif %}
+                        {% if product.type.name == 'пояс' %}
+                    <div class="text-table">Размеры пояса:</div>
+                    {% endif %}
+                        {% if product.type.name == 'пижаму' %}
+                    <div class="text-table">Размеры пижамы:</div>
+                    {% endif %}
+                        {% if product.type.name == 'трусы' %}
+                    <div class="text-table">Размеры трусов:</div>
+                    {% endif %}
+                        {% if product.type.name == 'халат/пеньюар' %}
+                    <div class="text-table">Размеры халатов/<br>пеньюаров:</div>
+                    {% endif %}
+                        {% if product.type.name == 'эротическое белье' %}
+                    <div class="text-table">Размеры эротического белья:</div>
+                    {% endif %}
+                        {% if product.type.name == 'одежду' %}
+                    <div class="text-table">Размеры одежды:</div>
+                    {% endif %}
+                        {% if product.type.name == 'комплект' %}
+                    <div class="text-table">Размеры комплекта:</div>
+                    {% endif %}
+                    <span class="nbsp-pc">&nbsp;&nbsp;</span>
+                    <div class="tble">
+                        <table class="size-table">
+                           <tbody>
+                             <tr style="text-align: center;">
+                               {% if product.num_of_size_70 != 0 %}
+                               {% if product.num_of_size_75 != 0 or product.num_of_size_80 != 0 or product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td>{{ product.size_70 }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_70 }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_75 != 0 %}
+                               {% if product.num_of_size_80 != 0 or product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td>{{ product.size_75 }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_75 }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_80 != 0 %}
+                               {% if product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td>{{ product.size_80 }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_80 }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_85 != 0 %}
+                               {% if product.num_of_size_90 != 0 %}
+                               <td>{{ product.size_85 }}</td>
+                               {% else %}
+                               <td style="border-right: none;">{{ product.size_85 }}</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_90 != 0 %}
+                               <td style="border-right: none;">{{ product.size_90 }}</td>
+                               {% endif %}
+                             </tr>
+                             <tr style="text-align: center;">
+                               {% if product.num_of_size_70 != 0 %}
+                               {% if product.num_of_size_75 != 0 or product.num_of_size_80 != 0 or product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_70 }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_70 }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_75 != 0 %}
+                               {% if product.num_of_size_80 != 0 or product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_75 }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_75 }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_80 != 0 %}
+                               {% if product.num_of_size_85 != 0 or product.num_of_size_90 != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_80 }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_80 }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_85 != 0 %}
+                               {% if product.num_of_size_90 != 0 %}
+                               <td style="border-bottom: none;">{{ product.num_of_size_85 }} шт.</td>
+                               {% else %}
+                               <td style="border-bottom: none; border-right: none;">{{ product.num_of_size_85 }} шт.</td>
+                               {% endif %}
+                               {% endif %}
+                               {% if product.num_of_size_90 != 0 %}
+                               <td style="border-right: none; border-bottom: none;">{{ product.num_of_size_90 }} шт.</td>{% endif %}
+                             </tr>
+                             </tbody>
+                        </table>
+                    </div>
+                </div>{% endif %}
+
+
+                </div>
+              </div>
+                <br>
+                <div class="tabs-flexbox">
+                  <div class="part-two-flexbot">
+                  <div class="tabs">
+                    <button class="btn-product-detail active" onclick="openTab('tab1', this)">&nbsp;Купить упаковку&nbsp;</button>
+                    {% if product.is_one_to_one == True %}
+                      <button class="btn-product-detail" onclick="openTab('tab2', this)">Купить поштучно</button>
+                    {% else %}
+                      <button class="btn-product-detail" style="display: none;">Купить поштучно</button>
+                    {% endif %}
+                  </div>
+                  <div id="tab1" class="tab-content">
+                  <form action="{% url 'add_to_cart' product.id %}" method="post">
+                  {% csrf_token %}
+                    {% if product.is_in_stock_key == "Есть в наличии" %}
+                    <!--<label>Выберите цвета:</label>-->
+                    <div class="color-item-flexbox">
+                    {% for color in product.color_exist.all %}
+                      {% for choice in product.COLOR_CHOICES %}
+                        {% if choice.0 == color.name %}
+                          <div class="color-item">
+                            <div class="input-choice-ex">
+                                <i><p style="font-size: 15px; color: grey; margin-bottom: 0px;">{{ choice.0 }}</p></i>
+                                <div class="input-choice">
+                                    <button type="button" class="btn btn-outline-light minus-button" onclick="decrementValue('quantity_{{ choice.0 }}')"><i class="fa-solid fa-minus" style="color: red;"></i></button>
+                                    <span style="opacity: .0">&nbsp;</span><input type="number" id="quantity_{{ choice.0 }}" name="quantity_{{ choice.0 }}" min="0" value="0" title="{{ choice.0 }}" class="quantity color-item choice-{{ choice.1 }}"><span style="opacity: .0">&nbsp;</span>
+                                    <button type="button" class="btn btn-outline-light plus-button" onclick="incrementValue('quantity_{{ choice.0 }}')"><i class="fa-solid fa-plus" style="color: green;"></i></button>
+                                </div>
+                            </div>
+                          </div>
+                        <p></p>
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                    </div>
+                      <form action="{% url 'add_to_cart' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-light" type="submit" style="font-size: 24px; display: none;" id="original-cart-button">В корзину</button>
+                      </form>
+                    {% else %}
+                         <p>Данный товар отсутствует на складе.</p>
+                    {% endif %}
+                  </form>
+                     <hr>
+              <div class="conclusion">
+                  <h3 class="itogo">Итого к оплате</h3>
+                  <div>
+                    <h2 class="span-h2" id="total-quantity">0</h2>
+                    <h2 class="span-h2">&nbsp;шт.</h2>
+                    <h2 class="span-h2">&nbsp;/&nbsp;</h2>
+                    <h2 class="span-h2" id="out">0</h2>
+                    <h2 class="span-h2">&nbsp;₽</h2>
+                  </div>
+                  <br>
+                  <form action="{% url 'add_to_cart' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-light" type="button" style="font-size: 24px;" id="ex-secondary-cart-button">В корзину</button>
+                  </form>
+              </div>
+                </div>
+
+
+
+              <div id="tab2" class="tab-content">
+              <div class="part-two-flexbot">
+                  <form action="{% url 'add_to_cart' product.id %}" method="post">
+                  {% csrf_token %}
+                    {% if product.is_in_stock_key == "Есть в наличии" %}
+                    <label title="Вы можете выбрать только один размер товара">Выберите размер:</label>
+                    {% if product.is_set == False %}
+                    <div class="size-options">
+                        {% if product.num_of_size_70 != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_70 }}" required> {{ product.size_70 }}
+                        </label>
+                        {% endif %}
+                        {% if product.num_of_size_75 != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_75 }}" required> {{ product.size_75 }}
+                        </label>
+                        {% endif %}
+                        {% if product.num_of_size_80 != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_80 }}" required> {{ product.size_80 }}
+                        </label>
+                        {% endif %}
+                        {% if product.num_of_size_85 != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_85 }}" required> {{ product.size_85 }}
+                        </label>
+                        {% endif %}
+                        {% if product.num_of_size_90 != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_90 }}" required> {{ product.size_90 }}
+                        </label>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="size-options">
+                        {% if product.num_of_size_70 != 0 and product.num_of_size_xs != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_70 }} - {{ product.size_xs }}" required> {{ product.size_70 }} - {{ product.size_xs }}
+                        </label>
+                        {% endif %}
+                        {% if product.num_of_size_75 != 0 and product.num_of_size_s != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_75 }} - {{ product.size_s }}" required> {{ product.size_75 }} - {{ product.size_s }}
+                        </label>
+                        {% endif %}
+                        {% if product.num_of_size_80 != 0 and product.num_of_size_m != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_80 }} - {{ product.size_m }}" required> {{ product.size_80 }} - {{ product.size_m }}
+                        </label>
+                        {% endif %}
+                        {% if product.num_of_size_85 != 0 and product.num_of_size_l != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_85 }} - {{ product.size_l }}" required> {{ product.size_85 }} - {{ product.size_l }}
+                        </label>
+                        {% endif %}
+                        {% if product.num_of_size_90 != 0 and product.num_of_size_xl != 0 %}
+                        <label>
+                            <input type="radio" name="size" value="{{ product.size_90 }} - {{ product.size_xl }}" required> {{ product.size_90 }} - {{ product.size_xl }}
+                        </label>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    <div class="color-item-flexbox">
+                    {% for color in product.color_exist.all %}
+                      {% for choice in product.COLOR_CHOICES %}
+                        {% if choice.0 == color.name %}
+                          <div class="color-item">
+                            <div class="input-choice-ex">
+                                <i><p style="font-size: 15px; color: grey; margin-bottom: 0px;">{{ choice.0 }}</p></i>
+                                <div class="input-choice">
+                                    <button type="button" class="btn btn-outline-light minus-button" onclick="oneDecrementValue('one-quantity_{{ choice.0 }}')"><i class="fa-solid fa-minus" style="color: red;"></i></button>
+                                    <span>&nbsp;</span><input type="number" id="one-quantity_{{ choice.0 }}" name="quantity_{{ choice.0 }}" min="0" value="0" title="{{ choice.0 }}" class="one-quantity color-item choice-{{ choice.1 }}"><span>&nbsp;</span>
+                                    <button type="button" class="btn btn-outline-light plus-button" onclick="oneIncrementValue('one-quantity_{{ choice.0 }}')"><i class="fa-solid fa-plus" style="color: green;"></i></button>
+                                </div>
+                            </div>
+                          </div>
+                        <p></p>
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                    </div>
+                      <form action="{% url 'add_to_cart' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-light" type="submit" style="font-size: 24px; display: none;" id="ex-original-cart-button">В корзину</button>
+                      </form>
+                    {% else %}
+                         <p>Данный товар отсутствует на складе.</p>
+                    {% endif %}
+                  </form>
+                </div>
+
+                  <hr>
+              <div class="conclusion">
+                  <h3 class="itogo">Итого к оплате</h3>
+                  <div>
+                    <h2 class="span-h2" id="ex-total-quantity">0</h2>
+                    <h2 class="span-h2">&nbsp;шт.</h2>
+                    <h2 class="span-h2">&nbsp;/&nbsp;</h2>
+                    <h2 class="span-h2" id="ex-out">0</h2>
+                    <h2 class="span-h2">&nbsp;₽</h2>
+                  </div>
+                  <br>
+                  <form action="{% url 'add_to_cart' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-light" type="button" style="font-size: 24px;" id="secondary-cart-button">В корзину</button>
+                  </form>
+              </div>
+              </div>
+              </div>
+              </div>
+              </div>
+            </div>
+          </div>
+               <!--<div class="button-info pc">
+                  <a href="#" id="popup-button"><h1 style="color: grey; font-size: 60px;" title="Доп. информация о товаре"><i class="fa-solid fa-circle-info fa-lg" style="color: #545454;"></i></h1></a><br><br>
+                        <div id="popup-container" class="popup-container">
+                          <div class="popup-content">
+                            <h2 style="text-align: center;">Дополнительная информация</h2><hr><br>
+                            <p style="text-align: center;"><i class="fa-solid fa-triangle-exclamation" style="color: #000000;"></i> Минимальная сумма оптового заказа составляет 10 000 руб. <i class="fa-solid fa-triangle-exclamation" style="color: #000000;"></i></p>
+                            <p style="text-align: left;">Если у вас есть какие либо вопросы, вы можете связаться с нами следующими способами:</p>
+                              <ul>
+                                  <li>Тел.: <b>8 (928) 229-73-85</b></li>
+                                  <li>Тел.: <b>8 (800) 500-85-80</b></li>
+                                  <li>Эл. почта: <b>sales@optombelie.ru</b></li>
+                              </ul>
+                            <ul>
+                            {% for inventory in inventories %}
+
+                              <li style="font-size: 17px;">{{ inventory.color }} цвет: {{ inventory.quantity }} шт.</li>
+
+                            {% endfor %}
+                            </ul>
+                          </div>
+                         </div>
+               </div>-->
+      </div>
+    </div>
+    </div><br><br><br><br><br><br><br><br><div class="phone-br"><br><br><br><br><br><br><br></div>
+<script>
+    // Функция для переключения вкладок
+    function openTab(tabName, buttonElement) {
+        var i, tabcontent, tabbuttons;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tabbuttons = document.getElementsByClassName("btn-product-detail");
+        for (i = 0; i < tabbuttons.length; i++) {
+            tabbuttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        buttonElement.classList.add("active");
+    }
+
+    // Получаем ссылку на первую кнопку
+    var defaultTabButton = document.querySelector(".btn-product-detail");
+
+    // Вызываем функцию для первой вкладки и передаем ссылку на первую кнопку
+    openTab("tab1", defaultTabButton);
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+  // Получаем ссылки на кнопки по их ID
+  var button1 = document.getElementById("secondary-cart-button");
+  var button2 = document.getElementById("ex-original-cart-button");
+
+  // Добавляем обработчик события клика на кнопку 1
+  button1.addEventListener("click", function() {
+    // Нажимаем кнопку 2
+    button2.click();
+  });
+});
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+  // Получаем ссылки на кнопки по их ID
+  var button1 = document.getElementById("ex-secondary-cart-button");
+  var button2 = document.getElementById("original-cart-button");
+
+  // Добавляем обработчик события клика на кнопку 1
+  button1.addEventListener("click", function() {
+    // Нажимаем кнопку 2
+    button2.click();
+  });
+});
+
+</script>
+<script>
+    var popupButton = document.getElementById("popup-button");
+    var popupContainer = document.getElementById("popup-container");
+
+    popupButton.addEventListener("click", function() {
+      popupContainer.style.display = "block";
+    });
+
+    popupContainer.addEventListener("click", function(event) {
+      if (event.target === popupContainer) {
+        popupContainer.style.display = "none";
+      }
+    });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Получение значений из элементов HTML
+    const productPrice = parseFloat(document.getElementById('product-price-x').innerText);
+    const numOfProducts = parseInt(document.getElementById('product-num-of-products').innerText);
+
+    // Вычисление цены за единицу товара
+    const pricePerUnit = productPrice / numOfProducts;
+
+    // Получение элемента для вывода результата
+    const outSumElement = document.getElementById('out-sum');
+
+    // Установка значения в элементе
+    outSumElement.innerText = pricePerUnit.toFixed(0); // Округление до двух знаков после запятой
+  });
+</script>
+<script>
+function updateSum() {
+  var inputs = document.querySelectorAll('.quantity'); // Замените '.quantity' на селектор, который выбирает ваши инпуты
+  var sum1 = 0;
+  var totalQuantity1 = 0;
+
+  inputs.forEach(function(input) {
+    var value = parseInt(input.value);
+    var priceElement = document.querySelector('#product-price-x');
+    var priceText = priceElement.textContent;
+    var price = parseFloat(priceText);
+    if (!isNaN(value)) {
+      sum1 += value * price;
+      totalQuantity1 += value;
+    }
+  });
+
+  var out = document.querySelector('#out');
+  var quantityDisplay = document.querySelector('#total-quantity');
+
+  out.innerHTML = sum1;
+  quantityDisplay.innerHTML = totalQuantity1;
+}
+
+function incrementValue(inputId) {
+  var inputElement = document.getElementById(inputId);
+  var currentValue = parseInt(inputElement.value);
+
+  // Увеличиваем значение на 1
+  inputElement.value = currentValue + 1;
+
+  updateSum();
+}
+
+function decrementValue(inputId) {
+  var inputElement = document.getElementById(inputId);
+  var currentValue = parseInt(inputElement.value);
+
+  // Уменьшаем значение на 1, но не меньше 0
+  inputElement.value = Math.max(currentValue - 1, 0);
+
+  updateSum();
+}
+</script>
+<script>
+function oneUpdateSum() {
+  var inputs = document.querySelectorAll('.one-quantity'); // Замените '.quantity' на селектор, который выбирает ваши инпуты
+  var sum2 = 0;
+  var totalQuantity2 = 0;
+
+  inputs.forEach(function(input) {
+    var value = parseInt(input.value);
+    var priceElement = document.querySelector('#product-price-x');
+    var quantityInPack = document.querySelector('#product-num-of-products');
+    var quantityText = quantityInPack.textContent;
+    var priceText = priceElement.textContent;
+    var price = parseFloat(priceText);
+    var exQuantity = parseInt(quantityText);
+    if (!isNaN(value)) {
+      sum2 += (value * price) / exQuantity;
+      totalQuantity2 += value;
+    }
+  });
+
+  var out = document.querySelector('#ex-out');
+  var quantityDisplay = document.querySelector('#ex-total-quantity');
+
+  out.innerHTML = sum2.toFixed(0);
+  quantityDisplay.innerHTML = totalQuantity2;
+}
+
+function oneIncrementValue(inputId) {
+  var inputElement = document.getElementById(inputId);
+  var currentValue = parseInt(inputElement.value);
+
+  // Увеличиваем значение на 1
+  inputElement.value = currentValue + 1;
+
+  oneUpdateSum();
+}
+
+function oneDecrementValue(inputId) {
+  var inputElement = document.getElementById(inputId);
+  var currentValue = parseInt(inputElement.value);
+
+  // Уменьшаем значение на 1, но не меньше 0
+  inputElement.value = Math.max(currentValue - 1, 0);
+
+  oneUpdateSum();
+}
+</script>
+<script>
+  $(document).ready(function() {
+    $(".thumbnail").click(function() {
+      // Получаем новую ссылку из атрибута data-mainimage
+      var newImage = $(this).data("mainimage");
+
+      // Устанавливаем новую ссылку как атрибут src для основного изображения
+      $("#mainImage").attr("src", newImage);
+
+      // Удаляем класс "selected" у всех миниатюр и добавляем его только выбранной миниатюре
+      $(".thumbnail").removeClass("selected");
+      $(this).addClass("selected");
+    });
+  });
+</script>
+<script>
+        // Обработчик события click внутри обработчика события change
+        $('#add-to-cart-button').click(function() {
+            var cartItems = [];
+            $('.color-item').each(function() {
+                var color = $(this).find('p').text();
+                var quantity = parseInt($(this).find('.one-quantity').val());
+                var sizeRadios = document.querySelectorAll('input[name="size"]');
+                var size = null;
+                for (var i = 0; i < sizeRadios.length; i++) {
+                  if (sizeRadios[i].checked) {
+                    size = sizeRadios[i].value;
+                    break; // Выход из цикла, если найдена выбранная радиокнопка
+                  }
+                }
+                console.log(quantity);
+                if (quantity > 0) {
+                    cartItems.push({ color: color, quantity: quantity, size: size });
+                }
+                console.log(cartItems);
+            });
+
+            if (cartItems.length > 0) {
+                var productData = {
+                    product_id: '{{ product.id }}',
+                    cart_items: cartItems,
+                };
+
+                $.ajax({
+                    url: '{% url 'add_to_cart' product.id %}',
+                    type: 'POST',
+                    data: JSON.stringify(productData),
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('Product added to cart');
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log('Error adding product to cart');
+                    }
+                });
+            }
+        });
+</script>
+<script>
+        // Обработчик события click внутри обработчика события change
+        $('#add-to-cart-button').click(function() {
+            var cartItems = [];
+            $('.color-item').each(function() {
+                var color = $(this).find('p').text();
+                var quantity = parseInt($(this).find('.quantity').val());
+                var sizeRadios = document.querySelectorAll('input[name="size"]');
+                var size = null;
+                for (var i = 0; i < sizeRadios.length; i++) {
+                  if (sizeRadios[i].checked) {
+                    size = sizeRadios[i].value;
+                    break; // Выход из цикла, если найдена выбранная радиокнопка
+                  }
+                }
+                console.log(quantity);
+                if (quantity > 0) {
+                    cartItems.push({ color: color, quantity: quantity, size: size });
+                }
+                console.log(cartItems);
+            });
+
+            if (cartItems.length > 0) {
+                var productData = {
+                    product_id: '{{ product.id }}',
+                    cart_items: cartItems,
+                };
+
+                $.ajax({
+                    url: '{% url 'add_to_cart' product.id %}',
+                    type: 'POST',
+                    data: JSON.stringify(productData),
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('Product added to cart');
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log('Error adding product to cart');
+                    }
+                });
+            }
+        });
+</script>
+
+
+                   <!--{% for color in product.color_exist.all %}
+                    {% for choice in product.COLOR_CHOICES %}
+                        {% if choice == color %}
+                        <div class="color-item">
+                        <label>{{ choice.1 }}</label>
+                        <input type="number" name="quantity_{{ choice.0 }}" min="0" value="0">
+                        {% endif %}
+                    {% endfor %}
+                  {% endfor %}-->
+{% endblock %}
